@@ -16,23 +16,19 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/login**", "/oauth2/**", "/css/**", "/js/**", "/images/**").permitAll()
+                        .requestMatchers("/", "/login", "/oauth2/**", "/css/**", "/js/**", "/images/**", "/error").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
-                        .successHandler(successHandler()) // Usa un manejador personalizado
+                        .successHandler(authenticationSuccessHandler())
+                        .failureUrl("/login?error=true")
                         .permitAll()
                 )
                 .oauth2Login(oauth -> oauth
                         .loginPage("/login")
                         .defaultSuccessUrl("/home", true)
-                        .authorizationEndpoint(authorization -> authorization
-                                .baseUri("/oauth2/authorization")
-                        )
-                        .redirectionEndpoint(redirection -> redirection
-                                .baseUri("/login/oauth2/code/*")
-                        )
+                        .failureUrl("/login?error=true")
                 )
                 .logout(logout -> logout
                         .logoutSuccessUrl("/login?logout")
@@ -41,16 +37,17 @@ public class SecurityConfig {
                         .permitAll()
                 )
                 .sessionManagement(session -> session
-                        .invalidSessionUrl("/login?invalid-session")
+                        .invalidSessionUrl("/login?invalid")
                         .maximumSessions(1)
-                        .expiredUrl("/login?session-expired")
-                );
+                        .expiredUrl("/login?expired")
+                )
+                .csrf(csrf -> csrf.disable()); // Solo para desarrollo
 
         return http.build();
     }
 
     @Bean
-    public AuthenticationSuccessHandler successHandler() {
+    public AuthenticationSuccessHandler authenticationSuccessHandler() {
         SimpleUrlAuthenticationSuccessHandler handler = new SimpleUrlAuthenticationSuccessHandler();
         handler.setDefaultTargetUrl("/home");
         handler.setAlwaysUseDefaultTargetUrl(true);

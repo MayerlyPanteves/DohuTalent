@@ -1,4 +1,4 @@
-package com.dohutalent.controller;
+package edu.sena.dohutalent.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,7 +8,7 @@ public class MainController {
 
     @GetMapping("/")
     public String root() {
-        return "redirect:/home";
+        return "home"; // Cambiado de redirect a vista directa
     }
 
     @GetMapping("/login")
@@ -19,10 +19,5 @@ public class MainController {
     @GetMapping("/home")
     public String home() {
         return "home";
-    }
-
-    @GetMapping("/error")
-    public String error() {
-        return "error"; // Opcional: crea una página de error personalizada
     }
 }
