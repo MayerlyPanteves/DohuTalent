@@ -1,0 +1,24 @@
+document.addEventListener('DOMContentLoaded', () => {
+const employees = Database.getEmployees();
+const tbody = document.querySelector('tbody');
+
+tbody.innerHTML = employees.map(emp => `
+<tr>
+    <td><input type="checkbox" value="${emp.id}"></td>
+    <td>${emp.idNumber}</td>
+    <td>${emp.firstName} ${emp.secondName || ''}</td>
+    <td>${emp.firstLastName} ${emp.secondLastName || ''}</td>
+    <td>${emp.position}</td>
+    <td>${emp.department}</td>
+    <td>${emp.status}</td>
+    <td>
+        <button onclick="location.href='ver.html?id=${emp.id}'">Ver</button>
+        <button onclick="location.href='editar.html?id=${emp.id}'">Editar</button>
+    </td>
+</tr>
+`).join('');
+
+document.getElementById('newEmployeeBtn').addEventListener('click', () => {
+location.href = 'nuevo.html';
+});
+});

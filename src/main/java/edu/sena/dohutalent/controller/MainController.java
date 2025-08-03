@@ -20,4 +20,20 @@ public class MainController {
     public String home() {
         return "home";
     }
+
+    @GetMapping("/Cambiocontraseña")
+    public String Cambiocontraseña() {
+        return "Cambiocontraseña";
+    }
+
+    @GetMapping("/Crearusuario")
+    public String Crearusuario() {
+        return "Crearusuario";
+    }
+
+    @GetMapping("/Empleados")
+    public String Empleados() {
+        return "Empleados";
+    }
+
 }

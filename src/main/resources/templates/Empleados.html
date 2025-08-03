@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOHUTALENT - Gestión de Empleados</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: #e6f2ff;
+            color: #2d3748;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Barra superior */
+        .header {
+            background-color: #0d47a1;
+            color: white;
+            padding: 0 25px;
+            height: 70px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .system-name {
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logout-btn {
+            background-color: #e53e3e;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            background-color: #c53030;
+        }
+
+        /* Barra de navegación */
+        .nav-bar {
+            background-color: #1976d2;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            padding: 0 25px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+            height: 100%;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 0 15px;
+            transition: all 0.2s;
+            border-bottom: 3px solid transparent;
+            font-size: 14px;
+            color: white;
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        /* Contenido principal */
+        .main-content {
+            padding: 30px;
+            flex: 1;
+        }
+
+        .action-buttons {
+            margin-bottom: 25px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .new-btn {
+            background-color: #38a169;
+            color: white;
+        }
+
+        .edit-btn {
+            background-color: #3182ce;
+            color: white;
+        }
+
+        .search-btn {
+            background-color: #dd6b20;
+            color: white;
+        }
+
+        .back-btn {
+            background-color: #718096;
+            color: white;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        th {
+            background-color: #0d47a1;
+            color: white;
+            font-weight: 500;
+            position: sticky;
+            top: 0;
+        }
+
+        tr:hover {
+            background-color: #ebf8ff;
+        }
+
+        .checkbox-cell {
+            width: 20px;
+            text-align: center;
+        }
+
+        .view-btn {
+            background-color: #4a5568;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+
+        .view-btn:hover {
+            background-color: #2d3748;
+        }
+
+        /* Pie de página */
+        .footer {
+            background-color: #0d47a1;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 14px;
+            position: sticky;
+            bottom: 0;
+        }
+
+        #datetime {
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+    <!-- Iconos de Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+<!-- Barra superior -->
+<div class="header">
+    <div class="system-name">DOHUTALENT</div>
+
+    <div class="user-info">
+        <span>Mayerly Panteves Duran (ADMON)</span>
+        <button class="logout-btn" id="logoutBtn">
+            <i class="fas fa-sign-out-alt"></i> Salir
+        </button>
+    </div>
+</div>
+
+<!-- Barra de navegación -->
+<div class="nav-bar">
+    <ul class="nav-menu">
+        <li class="nav-item">
+            <i class="fas fa-cog"></i> Sistema
+        </li>
+        <li class="nav-item">
+            <i class="fas fa-chart-bar"></i> Reportes
+        </li>
+        <li class="nav-item">
+            <i class="fas fa-users"></i> Empleados
+        </li>
+    </ul>
+</div>
+
+<!-- Contenido principal -->
+<div class="main-content">
+    <h2>Gestión de Empleados</h2>
+
+    <div class="action-buttons">
+        <button class="action-btn new-btn" id="newEmployeeBtn">
+            <i class="fas fa-plus"></i> Nuevo
+        </button>
+        <button class="action-btn edit-btn">
+            <i class="fas fa-edit"></i> Modificar
+        </button>
+        <button class="action-btn search-btn" id="searchBtn">
+            <i class="fas fa-search"></i> Buscar
+        </button>
+        <button class="action-btn back-btn" id="backBtn">
+            <i class="fas fa-arrow-left"></i> Atrás
+        </button>
+    </div>
+
+    <table>
+        <thead>
+        <tr>
+            <th class="checkbox-cell"></th>
+            <th>Identificación</th>
+            <th>Primer apellido</th>
+            <th>Segundo apellido</th>
+            <th>Primer nombre</th>
+            <th>Cargo</th>
+            <th>Departamento</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td class="checkbox-cell"><input type="checkbox"></td>
+            <td>1075305976</td>
+            <td>Panteves</td>
+            <td>Duran</td>
+            <td>Mayerly</td>
+            <td>Administrador</td>
+            <td>Dirección General</td>
+            <td>Activo</td>
+            <td><button class="view-btn" onclick="window.location.href='Informacionempleado.html'">Ver</button></td>
+        </tr>
+        <tr>
+            <td class="checkbox-cell"><input type="checkbox"></td>
+            <td>1234567890</td>
+            <td>Gómez</td>
+            <td>Pérez</td>
+            <td>Carlos</td>
+            <td>Gerente</td>
+            <td>Administración</td>
+            <td>Activo</td>
+            <td><button class="view-btn">Ver</button></td>
+        </tr>
+        <tr>
+            <td class="checkbox-cell"><input type="checkbox"></td>
+            <td>2345678901</td>
+            <td>Rodríguez</td>
+            <td>Martínez</td>
+            <td>Ana</td>
+            <td>Contadora</td>
+            <td>Finanzas</td>
+            <td>Activo</td>
+            <td><button class="view-btn">Ver</button></td>
+        </tr>
+        <tr>
+            <td class="checkbox-cell"><input type="checkbox"></td>
+            <td>3456789012</td>
+            <td>López</td>
+            <td>García</td>
+            <td>Juan</td>
+            <td>Supervisor</td>
+            <td>Producción</td>
+            <td>Activo</td>
+            <td><button class="view-btn">Ver</button></td>
+        </tr>
+        <tr>
+            <td class="checkbox-cell"><input type="checkbox"></td>
+            <td>4567890123</td>
+            <td>Hernández</td>
+            <td>Sánchez</td>
+            <td>María</td>
+            <td>Analista</td>
+            <td>Recursos Humanos</td>
+            <td>Activo</td>
+            <td><button class="view-btn">Ver</button></td>
+        </tr>
+        <tr>
+            <td class="checkbox-cell"><input type="checkbox"></td>
+            <td>5678901234</td>
+            <td>Díaz</td>
+            <td>Ramírez</td>
+            <td>Pedro</td>
+            <td>Ingeniero</td>
+            <td>Tecnología</td>
+            <td>Activo</td>
+            <td><button class="view-btn">Ver</button></td>
+        </tr>
+        <tr>
+            <td class="checkbox-cell"><input type="checkbox"></td>
+            <td>6789012345</td>
+            <td>Torres</td>
+            <td>Flórez</td>
+            <td>Laura</td>
+            <td>Diseñadora</td>
+            <td>Marketing</td>
+            <td>Activo</td>
+            <td><button class="view-btn">Ver</button></td>
+        </tr>
+        <tr>
+            <td class="checkbox-cell"><input type="checkbox"></td>
+            <td>7890123456</td>
+            <td>Vargas</td>
+            <td>Mendoza</td>
+            <td>Andrés</td>
+            <td>Asistente</td>
+            <td>Logística</td>
+            <td>Inactivo</td>
+            <td><button class="view-btn">Ver</button></td>
+        </tr>
+        <tr>
+            <td class="checkbox-cell"><input type="checkbox"></td>
+            <td>8901234567</td>
+            <td>Castro</td>
+            <td>Rojas</td>
+            <td>Sofía</td>
+            <td>Secretaria</td>
+            <td>Dirección</td>
+            <td>Activo</td>
+            <td><button class="view-btn">Ver</button></td>
+        </tr>
+        <tr>
+            <td class="checkbox-cell"><input type="checkbox"></td>
+            <td>9012345678</td>
+            <td>Ortiz</td>
+            <td>Jiménez</td>
+            <td>David</td>
+            <td>Auditor</td>
+            <td>Calidad</td>
+            <td>Activo</td>
+            <td><button class="view-btn">Ver</button></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Pie de página con fecha y hora -->
+<div class="footer">
+    <span id="datetime"></span>
+</div>
+
+<script>
+    // Función para actualizar fecha y hora
+    function updateDateTime() {
+        const now = new Date();
+        const options = {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+        };
+        document.getElementById('datetime').textContent = now.toLocaleDateString('es-ES', options);
+    }
+
+    // Actualizar inmediatamente y luego cada segundo
+    updateDateTime();
+    setInterval(updateDateTime, 1000);
+
+    // Eventos para los botones
+    document.getElementById('logoutBtn').addEventListener('click', function() {
+        window.location.href = 'login';
+    });
+
+    document.getElementById('backBtn').addEventListener('click', function() {
+        window.location.href = 'home';
+    });
+
+    document.getElementById('newEmployeeBtn').addEventListener('click', function() {
+        window.location.href = 'Nuevoempleado';
+    });
+</script>
+</body>
+</html>
