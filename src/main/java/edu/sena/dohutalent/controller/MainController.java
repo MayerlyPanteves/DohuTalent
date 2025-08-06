@@ -36,4 +36,9 @@ public class MainController {
         return "Empleados";
     }
 
+    @GetMapping("/Nuevoempleado")
+    public String Nuevoempleado() {
+        return "Nuevoempleado";
+    }
+
 }
