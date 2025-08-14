@@ -1,5 +1,6 @@
 package edu.sena.dohutalent.controller;
 
+import ch.qos.logback.core.model.Model;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -38,7 +39,6 @@ public class MainController {
 
     @GetMapping("/Nuevoempleado")
     public String Nuevoempleado() {
-        return "Nuevoempleado";
+        return "formulario-empleado";
     }
-
 }

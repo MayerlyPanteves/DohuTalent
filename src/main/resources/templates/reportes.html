@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOHUTALENT - Generar Reportes</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: #e6f2ff;
+            color: #2d3748;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Barra superior */
+        .header {
+            background-color: #0d47a1;
+            color: white;
+            padding: 0 25px;
+            height: 70px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .system-name {
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logout-btn {
+            background-color: #e53e3e;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            background-color: #c53030;
+        }
+
+        /* Barra de navegación */
+        .nav-bar {
+            background-color: #1976d2;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            padding: 0 25px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+            height: 100%;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 0 15px;
+            transition: all 0.2s;
+            border-bottom: 3px solid transparent;
+            font-size: 14px;
+            color: white;
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        /* Contenido principal */
+        .main-content {
+            padding: 30px;
+            flex: 1;
+        }
+
+        .report-form {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+        }
+
+        .form-section h3 {
+            color: #0d47a1;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #bbdefb;
+        }
+
+        /* Estilos para el formulario de reportes */
+        .filter-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+
+        .filter-label {
+            flex: 1;
+            font-weight: 500;
+            color: #4a5568;
+        }
+
+        .filter-input {
+            flex: 2;
+        }
+
+        .filter-include {
+            flex: 1;
+            text-align: center;
+        }
+
+        .filter-row input,
+        .filter-row select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .required-field::after {
+            content: " *";
+            color: #e53e3e;
+        }
+
+        .filter-row input:focus,
+        .filter-row select:focus {
+            outline: none;
+            border-color: #3182ce;
+            box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.2);
+        }
+
+        .checkbox-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .checkbox-container input[type="checkbox"] {
+            width: auto;
+            margin-right: 8px;
+        }
+
+        /* Botones de acción */
+        .action-buttons {
+            margin-top: 30px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .left-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .right-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back-btn {
+            background-color: #718096;
+            color: white;
+        }
+
+        .create-btn {
+            background-color: #d69e2e; /* Amarillo */
+            color: white;
+        }
+
+        .view-btn {
+            background-color: #4299e1; /* Azul */
+            color: white;
+        }
+
+        .excel-btn {
+            background-color: #38a169; /* Verde */
+            color: white;
+        }
+
+        .pdf-btn {
+            background-color: #e53e3e; /* Rojo */
+            color: white;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            opacity: 0.9;
+        }
+
+        /* Pie de página */
+        .footer {
+            background-color: #0d47a1;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 14px;
+            position: sticky;
+            bottom: 0;
+        }
+
+        #datetime {
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+    <!-- Iconos de Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+<!-- Barra superior -->
+<div class="header">
+    <div class="system-name">DOHUTALENT</div>
+
+    <div class="user-info">
+        <span>Mayerly Panteves Duran (ADMON)</span>
+        <button class="logout-btn">
+            <i class="fas fa-sign-out-alt"></i> Salir
+        </button>
+    </div>
+</div>
+
+<!-- Barra de navegación -->
+<div class="nav-bar">
+    <ul class="nav-menu">
+        <li class="nav-item">
+            <i class="fas fa-cog"></i> Sistema
+        </li>
+        <li class="nav-item">
+            <i class="fas fa-chart-bar"></i> Reportes
+        </li>
+        <li class="nav-item">
+            <i class="fas fa-users"></i> Empleados
+        </li>
+    </ul>
+</div>
+
+<!-- Contenido principal -->
+<div class="main-content">
+    <h2>Generar Reportes de Empleados</h2>
+
+    <div class="report-form">
+        <!-- Filtros de búsqueda -->
+        <div class="form-section">
+            <h3>Filtros de Búsqueda</h3>
+
+            <!-- Documento -->
+            <div class="filter-row">
+                <div class="filter-label">Documento de identidad</div>
+                <div class="filter-input">
+                    <input type="text" placeholder="Ingrese número de documento">
+                </div>
+                <div class="filter-include">
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="incluir-documento" checked>
+                        <label for="incluir-documento">Incluir en reporte</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nombres -->
+            <div class="filter-row">
+                <div class="filter-label">Primer nombre</div>
+                <div class="filter-input">
+                    <input type="text" placeholder="Primer nombre">
+                </div>
+                <div class="filter-include">
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="incluir-primer-nombre" checked>
+                        <label for="incluir-primer-nombre">Incluir en reporte</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-row">
+                <div class="filter-label">Segundo nombre</div>
+                <div class="filter-input">
+                    <input type="text" placeholder="Segundo nombre">
+                </div>
+                <div class="filter-include">
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="incluir-segundo-nombre">
+                        <label for="incluir-segundo-nombre">Incluir en reporte</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Apellidos -->
+            <div class="filter-row">
+                <div class="filter-label">Primer apellido</div>
+                <div class="filter-input">
+                    <input type="text" placeholder="Primer apellido">
+                </div>
+                <div class="filter-include">
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="incluir-primer-apellido" checked>
+                        <label for="incluir-primer-apellido">Incluir en reporte</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-row">
+                <div class="filter-label">Segundo apellido</div>
+                <div class="filter-input">
+                    <input type="text" placeholder="Segundo apellido">
+                </div>
+                <div class="filter-include">
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="incluir-segundo-apellido">
+                        <label for="incluir-segundo-apellido">Incluir en reporte</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tipo de contrato y cargo -->
+            <div class="filter-row">
+                <div class="filter-label">Tipo de contrato</div>
+                <div class="filter-input">
+                    <select>
+                        <option value="">Todos los tipos</option>
+                        <option value="fijo">Fijo</option>
+                        <option value="temporal">Temporal</option>
+                        <option value="indefinido">Indefinido</option>
+                        <option value="otro">Otro</option>
+                    </select>
+                </div>
+                <div class="filter-include">
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="incluir-tipo-contrato" checked>
+                        <label for="incluir-tipo-contrato">Incluir en reporte</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-row">
+                <div class="filter-label">Cargo</div>
+                <div class="filter-input">
+                    <input type="text" placeholder="Ingrese el cargo">
+                </div>
+                <div class="filter-include">
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="incluir-cargo" checked>
+                        <label for="incluir-cargo">Incluir en reporte</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Campos adicionales para filtrar -->
+            <div class="filter-row">
+                <div class="filter-label">Departamento</div>
+                <div class="filter-input">
+                    <select>
+                        <option value="">Todos los departamentos</option>
+                        <option>Administración</option>
+                        <option>Recursos Humanos</option>
+                        <option>Finanzas</option>
+                        <option>Tecnología</option>
+                        <option>Operaciones</option>
+                    </select>
+                </div>
+                <div class="filter-include">
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="incluir-departamento">
+                        <label for="incluir-departamento">Incluir en reporte</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-row">
+                <div class="filter-label">Estado</div>
+                <div class="filter-input">
+                    <select>
+                        <option value="">Todos los estados</option>
+                        <option value="active">Activo</option>
+                        <option value="inactive">Inactivo</option>
+                        <option value="vacation">Vacaciones</option>
+                        <option value="license">Licencia</option>
+                    </select>
+                </div>
+                <div class="filter-include">
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="incluir-estado">
+                        <label for="incluir-estado">Incluir en reporte</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-row">
+                <div class="filter-label">Fecha de ingreso (desde)</div>
+                <div class="filter-input">
+                    <input type="date">
+                </div>
+                <div class="filter-include">
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="incluir-fecha-ingreso">
+                        <label for="incluir-fecha-ingreso">Incluir en reporte</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-row">
+                <div class="filter-label">Fecha de ingreso (hasta)</div>
+                <div class="filter-input">
+                    <input type="date">
+                </div>
+                <div class="filter-include">
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="incluir-fecha-ingreso-hasta">
+                        <label for="incluir-fecha-ingreso-hasta">Incluir en reporte</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-row">
+                <div class="filter-label">Salario (mínimo)</div>
+                <div class="filter-input">
+                    <input type="number" placeholder="Salario mínimo">
+                </div>
+                <div class="filter-include">
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="incluir-salario">
+                        <label for="incluir-salario">Incluir en reporte</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Botones de acción -->
+        <div class="action-buttons">
+            <div class="left-buttons">
+                <button class="action-btn back-btn" id="backBtn">
+                    <i class="fas fa-arrow-left"></i> Atrás
+                </button>
+            </div>
+            <div class="right-buttons">
+                <button class="action-btn create-btn">
+                    <i class="fas fa-file-alt"></i> Crear reporte
+                </button>
+                <button class="action-btn view-btn">
+                    <i class="fas fa-desktop"></i> Ver en pantalla
+                </button>
+                <button class="action-btn excel-btn">
+                    <i class="fas fa-file-excel"></i> Excel
+                </button>
+                <button class="action-btn pdf-btn">
+                    <i class="fas fa-file-pdf"></i> PDF
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Pie de página con fecha y hora -->
+<div class="footer">
+    <span id="datetime"></span>
+</div>
+
+<script>
+    // Función para actualizar fecha y hora
+    function updateDateTime() {
+        const now = new Date();
+        const options = {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+        };
+        document.getElementById('datetime').textContent = now.toLocaleDateString('es-ES', options);
+    }
+
+    // Actualizar inmediatamente y luego cada segundo
+    updateDateTime();
+    setInterval(updateDateTime, 1000);
+
+    // Eventos para los botones
+    document.getElementById('backBtn').addEventListener('click', function() {
+        window.location.href = 'home';
+    });
+
+    // Logout
+    document.querySelector('.logout-btn').addEventListener('click', function() {
+        window.location.href = 'login';
+    });
+</script>
+</body>
+</html>

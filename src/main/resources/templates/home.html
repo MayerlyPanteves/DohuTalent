@@ -172,15 +172,16 @@
             margin-bottom: 20px;
         }
 
-        .dashboard-image {
-            max-width: 60%;
-            width: auto;
-            height: auto;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            margin: 20px auto;
-            border: 1px solid #e2e8f0;
-            display: block;
+        /* Estilo para el texto del logo */
+        .logo-text {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin: 20px 0;
+            background: linear-gradient(90deg, #0d47a1 50%, #e53e3e 50%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
         }
 
         /* Pie de página con fecha y hora */
@@ -239,7 +240,8 @@
         <h2>Bienvenido al sistema de gestión de empleados</h2>
         <p>CLÍNICA ** ******** * ********* ****.</p>
 
-        <img src="Images/Logo.png" alt="Dashboard DOHUTALENT" class="dashboard-image">
+        <!-- Texto DohuTalent reemplazando el logo -->
+        <div class="logo-text">DohuTalent</div>
     </div>
 </div>
 

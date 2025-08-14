@@ -88,8 +88,6 @@
             border-bottom: 3px solid transparent;
             font-size: 14px;
             color: white;
-            opacity: 0.6;
-            pointer-events: none;
         }
 
         .nav-item:hover {
@@ -221,6 +219,21 @@
             gap: 8px;
         }
 
+        .view-btn {
+            background-color: #3182ce;
+            color: white;
+        }
+
+        .excel-btn {
+            background-color: #38a169;
+            color: white;
+        }
+
+        .pdf-btn {
+            background-color: #e53e3e;
+            color: white;
+        }
+
         .back-btn {
             background-color: #718096;
             color: white;
@@ -266,7 +279,7 @@
 
     <div class="user-info">
         <span>Mayerly Panteves Duran (ADMON)</span>
-        <button class="logout-btn" id="logoutBtn">
+        <button class="logout-btn">
             <i class="fas fa-sign-out-alt"></i> Salir
         </button>
     </div>
@@ -275,13 +288,13 @@
 <!-- Barra de navegación -->
 <div class="nav-bar">
     <ul class="nav-menu">
-        <li class="nav-item">
+        <li class="nav-item" onclick="window.location.href='#'">
             <i class="fas fa-cog"></i> Sistema
         </li>
-        <li class="nav-item">
+        <li class="nav-item" onclick="window.location.href='#'">
             <i class="fas fa-chart-bar"></i> Reportes
         </li>
-        <li class="nav-item">
+        <li class="nav-item" onclick="window.location.href='employees.html'">
             <i class="fas fa-users"></i> Empleados
         </li>
     </ul>
@@ -299,7 +312,6 @@
                 <div class="form-group">
                     <label for="docType" class="required-field">Tipo documento</label>
                     <select id="docType">
-                        <option value="">Seleccione...</option>
                         <option>Cédula ciudadana</option>
                         <option>Pasaporte</option>
                         <option>Tarjeta de identidad</option>
@@ -307,34 +319,33 @@
                 </div>
                 <div class="form-group">
                     <label for="idNumber" class="required-field">Identificación</label>
-                    <input type="text" id="idNumber" placeholder="Ingrese número de identificación">
+                    <input type="text" id="idNumber" value="1075305976">
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group">
                     <label for="firstName" class="required-field">Primer nombre</label>
-                    <input type="text" id="firstName" placeholder="Ingrese primer nombre">
+                    <input type="text" id="firstName" value="Mayerly">
                 </div>
                 <div class="form-group">
                     <label for="secondName">Segundo nombre</label>
-                    <input type="text" id="secondName" placeholder="Ingrese segundo nombre (opcional)">
+                    <input type="text" id="secondName" value="">
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group">
                     <label for="firstLastName" class="required-field">Primer apellido</label>
-                    <input type="text" id="firstLastName" placeholder="Ingrese primer apellido">
+                    <input type="text" id="firstLastName" value="Panteves">
                 </div>
                 <div class="form-group">
                     <label for="secondLastName">Segundo apellido</label>
-                    <input type="text" id="secondLastName" placeholder="Ingrese segundo apellido (opcional)">
+                    <input type="text" id="secondLastName" value="Duran">
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group">
                     <label for="gender" class="required-field">Sexo</label>
                     <select id="gender">
-                        <option value="">Seleccione...</option>
                         <option value="F">Femenino</option>
                         <option value="M">Masculino</option>
                         <option value="O">Otro</option>
@@ -342,7 +353,7 @@
                 </div>
                 <div class="form-group">
                     <label for="bloodType">Grupo sanguíneo</label>
-                    <input type="text" id="bloodType" placeholder="Ingrese grupo sanguíneo (opcional)">
+                    <input type="text" id="bloodType" value="O+">
                 </div>
             </div>
         </div>
@@ -353,21 +364,21 @@
             <div class="form-row">
                 <div class="form-group">
                     <label for="address" class="required-field">Dirección</label>
-                    <input type="text" id="address" placeholder="Ingrese dirección de residencia">
+                    <input type="text" id="address" value="Calle 12 #23-12">
                 </div>
                 <div class="form-group">
                     <label for="phone">Teléfono</label>
-                    <input type="text" id="phone" placeholder="Ingrese número de teléfono (opcional)">
+                    <input type="text" id="phone" value="3212345567">
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group">
                     <label for="email" class="required-field">Correo electrónico</label>
-                    <input type="email" id="email" placeholder="Ingrese correo electrónico">
+                    <input type="email" id="email" value="mayerly@gmail.com">
                 </div>
                 <div class="form-group">
                     <label for="birthDate" class="required-field">Fecha de nacimiento</label>
-                    <input type="date" id="birthDate">
+                    <input type="date" id="birthDate" value="1997-11-07">
                 </div>
             </div>
         </div>
@@ -379,7 +390,6 @@
                 <div class="form-group">
                     <label for="contractType" class="required-field">Tipo contrato</label>
                     <select id="contractType">
-                        <option value="">Seleccione...</option>
                         <option>Fijo</option>
                         <option>Temporal</option>
                         <option>Prestación de servicios</option>
@@ -387,27 +397,27 @@
                 </div>
                 <div class="form-group">
                     <label for="position" class="required-field">Cargo</label>
-                    <input type="text" id="position" placeholder="Ingrese el cargo del empleado">
+                    <input type="text" id="position" value="Aux contable">
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group">
                     <label for="startDate" class="required-field">Fecha inicial contrato</label>
-                    <input type="date" id="startDate">
+                    <input type="date" id="startDate" value="2025-01-01">
                 </div>
                 <div class="form-group">
                     <label for="endDate">Fecha final contrato</label>
-                    <input type="date" id="endDate">
+                    <input type="date" id="endDate" value="2025-12-31">
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group">
                     <label for="status">Estado</label>
-                    <input type="text" id="status" placeholder="Estado del empleado">
+                    <input type="text" id="status" value="A (Activo)">
                 </div>
                 <div class="form-group">
                     <label for="salary">Salario</label>
-                    <input type="text" id="salary" placeholder="Ingrese salario">
+                    <input type="text" id="salary" value="$1.423.500">
                 </div>
             </div>
         </div>
@@ -418,11 +428,11 @@
             <div class="form-row">
                 <div class="form-group">
                     <label for="pensionFund">Fondo pensión</label>
-                    <input type="text" id="pensionFund" placeholder="Ingrese fondo de pensiones">
+                    <input type="text" id="pensionFund" value="Porvenir">
                 </div>
                 <div class="form-group">
                     <label for="healthFund">Fondo salud</label>
-                    <input type="text" id="healthFund" placeholder="Ingrese EPS">
+                    <input type="text" id="healthFund" value="Sanitas">
                 </div>
             </div>
         </div>
@@ -433,18 +443,17 @@
             <div class="form-row">
                 <div class="form-group">
                     <label for="bankAccount">Cuenta bancaria</label>
-                    <input type="text" id="bankAccount" placeholder="Número de cuenta bancaria">
+                    <input type="text" id="bankAccount" value="123434565446">
                 </div>
                 <div class="form-group">
                     <label for="bank">Banco</label>
-                    <input type="text" id="bank" placeholder="Nombre del banco">
+                    <input type="text" id="bank" value="Bancolombia">
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group">
                     <label for="accountType">Tipo cuenta</label>
                     <select id="accountType">
-                        <option value="">Seleccione...</option>
                         <option>Ahorros</option>
                         <option>Corriente</option>
                     </select>
@@ -473,6 +482,15 @@
             </button>
             <button class="action-btn exit-btn" id="exitBtn">
                 <i class="fas fa-sign-out-alt"></i> Salir
+            </button>
+            <button class="action-btn view-btn">
+                <i class="fas fa-eye"></i> Ver en pantalla
+            </button>
+            <button class="action-btn excel-btn">
+                <i class="fas fa-file-excel"></i> Excel
+            </button>
+            <button class="action-btn pdf-btn">
+                <i class="fas fa-file-pdf"></i> PDF
             </button>
             <button class="action-btn save-btn" id="saveBtn">
                 <i class="fas fa-save"></i> Guardar
@@ -506,21 +524,22 @@
     updateDateTime();
     setInterval(updateDateTime, 1000);
 
-    // Eventos para los botones
-    document.getElementById('logoutBtn').addEventListener('click', function() {
-        window.location.href = 'home.html';
+    // Logout
+    document.querySelector('.logout-btn').addEventListener('click', function() {
+        window.location.href = 'login';
     });
 
+    // Eventos para los botones según lo solicitado
     document.getElementById('backBtn').addEventListener('click', function() {
-        window.location.href = 'Empleados.html';
+        window.location.href = 'Empleados';
     });
 
     document.getElementById('exitBtn').addEventListener('click', function() {
-        window.location.href = 'login.html';
+        window.location.href = 'home';
     });
 
     document.getElementById('saveBtn').addEventListener('click', function() {
-        window.location.href ="@{/Empleados}">Ver Empleados</a>
+        window.location.href = 'Empleados';
     });
 </script>
 </body>
