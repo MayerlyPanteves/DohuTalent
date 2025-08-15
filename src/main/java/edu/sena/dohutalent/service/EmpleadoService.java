@@ -83,4 +83,7 @@ public class EmpleadoService {
 
     public void guardarEmpleado(Empleado empleado) {
     }
+
+    public void guardar(Empleado empleado) {
+    }
 }

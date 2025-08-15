@@ -506,10 +506,10 @@
 
         <!-- Botones de acción -->
         <div class="action-buttons">
-            <button type="button" class="action-btn back-btn" onclick="window.location.href='/Empleados'">
+            <button type="button" class="action-btn back-btn" onclick="window.location.href='Empleados'">
                 <i class="fas fa-arrow-left"></i> Atrás
             </button>
-            <button type="button" class="action-btn exit-btn" onclick="window.location.href='/'">
+            <button type="button" class="action-btn exit-btn" onclick="window.location.href='login'">
                 <i class="fas fa-sign-out-alt"></i> Salir
             </button>
             <button type="button" class="action-btn view-btn" id="viewBtn">
@@ -561,13 +561,18 @@
         saveBtn.classList.add('btn-loading');
         saveBtn.disabled = true;
 
+
+        // Obtener el token CSRF del formulario
+        const csrfToken = document.querySelector('input[name="_csrf"]').value;
+
         const formData = new FormData(this);
 
         fetch(this.action, {
             method: 'POST',
             body: formData,
             headers: {
-                'Accept': 'application/json'
+                'Accept': 'application/json',
+                'X-CSRF-TOKEN': csrfToken // Incluir el token CSRF en los headers
             }
         })
             .then(response => {
@@ -577,6 +582,13 @@
                     throw new Error('Error en la respuesta del servidor');
                 }
                 return response.json();
+            })
+            .then(data => {
+                if(data.success) {
+                    window.location.href = '/Empleados?success=' + encodeURIComponent(data.success);
+                } else if(data.error) {
+                    alert('Error: ' + data.error);
+                }
             })
             .catch(error => {
                 console.error('Error:', error);
