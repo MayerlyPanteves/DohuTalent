@@ -7,7 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background-color: #f8f9fa;
+            background-color: #ADD8E6; /* Darker blue background */
         }
         .login-container {
             max-width: 400px;
@@ -21,15 +21,23 @@
             text-align: center;
             margin-bottom: 20px;
             font-weight: bold;
-            color: #0d6efd;
-            font-size: 24px;
+            font-size: 36px; /* Larger size */
+            font-family: 'Arial', sans-serif; /* Clean, modern font */
+        }
+        .dohu {
+            color: #2a5c9a; /* Blue part of Dohu */
+        }
+        .talent {
+            color: #d62e2e; /* Red part of Talent */
         }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="login-container">
-        <div class="logo">DOHUTALENT</div>
+        <div class="logo">
+            <span class="dohu">Dohu</span><span class="talent">Talent</span>
+        </div>
 
         <div th:if="${param.error}" class="alert alert-danger">
             Usuario o contraseña incorrectos

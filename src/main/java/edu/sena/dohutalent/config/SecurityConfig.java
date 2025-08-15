@@ -22,7 +22,12 @@ public class SecurityConfig {
                                 "/webjars/**",
                                 "/css/**",
                                 "/js/**",
-                                "/images/**"
+                                "/images/**",
+                                "/empleados/**",
+                                "/empleados/formulario",
+                                "/empleados/guardar",
+                                "/empleados/Empleados",
+                                "/empleados/exito"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )

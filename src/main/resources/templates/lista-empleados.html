@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Empleados</title>
+</head>
+<body>
+<h1>Lista de Empleados</h1>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Fondo Pensión</th>
+        <th>Fondo Salud</th>
+        <th>Banco</th>
+        <th>Número Cuenta</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="empleado : ${empleados}">
+        <td th:text="${empleado.id}"></td>
+        <td th:text="${empleado.fondoPension}"></td>
+        <td th:text="${empleado.fondoSalud}"></td>
+        <td th:text="${empleado.banco}"></td>
+        <td th:text="${empleado.numeroCuenta}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<a th:href="@{/empleados/formulario}">Agregar nuevo empleado</a>
+</body>
+</html>

@@ -4,7 +4,4 @@ import edu.sena.dohutalent.model.Empleado;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface EmpleadoRepository extends JpaRepository<Empleado, Long> {
-    Empleado findByNumeroDocumento(String numeroDocumento);
-    boolean existsByNumeroDocumento(String numeroDocumento);
-    boolean existsByEmail(String email);
 }
