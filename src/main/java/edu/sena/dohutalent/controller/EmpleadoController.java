@@ -16,7 +16,7 @@ public class EmpleadoController {
         this.empleadoService = empleadoService;
     }
 
-    @GetMapping("/empleados/formulario")
+    @GetMapping("/formulario")
     public String mostrarFormulario(Model model) {
         model.addAttribute("empleado", new Empleado());
         return "Informacion-empleado";

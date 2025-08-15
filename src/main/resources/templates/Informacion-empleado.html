@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -88,6 +88,8 @@
             border-bottom: 3px solid transparent;
             font-size: 14px;
             color: white;
+            opacity: 0.6;
+            pointer-events: none;
         }
 
         .nav-item:hover {
@@ -219,21 +221,6 @@
             gap: 8px;
         }
 
-        .view-btn {
-            background-color: #3182ce;
-            color: white;
-        }
-
-        .excel-btn {
-            background-color: #38a169;
-            color: white;
-        }
-
-        .pdf-btn {
-            background-color: #e53e3e;
-            color: white;
-        }
-
         .back-btn {
             background-color: #718096;
             color: white;
@@ -279,7 +266,7 @@
 
     <div class="user-info">
         <span>Mayerly Panteves Duran (ADMON)</span>
-        <button class="logout-btn" onclick="window.location.href='/logout'">
+        <button class="logout-btn" id="logoutBtn">
             <i class="fas fa-sign-out-alt"></i> Salir
         </button>
     </div>
@@ -288,13 +275,13 @@
 <!-- Barra de navegación -->
 <div class="nav-bar">
     <ul class="nav-menu">
-        <li class="nav-item" onclick="window.location.href='/sistema'">
+        <li class="nav-item">
             <i class="fas fa-cog"></i> Sistema
         </li>
-        <li class="nav-item" onclick="window.location.href='/reportes'">
+        <li class="nav-item">
             <i class="fas fa-chart-bar"></i> Reportes
         </li>
-        <li class="nav-item" onclick="window.location.href='/empleados'">
+        <li class="nav-item">
             <i class="fas fa-users"></i> Empleados
         </li>
     </ul>
@@ -304,48 +291,50 @@
 <div class="main-content">
     <h2><i class="fas fa-user-plus"></i> Formulario de Empleado</h2>
 
-    <form class="employee-form" th:action="@{/empleados/guardar}" method="post" th:object="${empleado}">
+    <div class="employee-form">
         <!-- Información Básica -->
         <div class="form-section">
             <h3><i class="fas fa-id-card"></i> Información Básica</h3>
             <div class="form-row">
                 <div class="form-group">
                     <label for="docType" class="required-field">Tipo documento</label>
-                    <select id="docType" th:field="*{tipoDocumento}">
-                        <option value="CEDULA">Cédula ciudadana</option>
-                        <option value="PASAPORTE">Pasaporte</option>
-                        <option value="TARJETA_ID">Tarjeta de identidad</option>
+                    <select id="docType">
+                        <option value="">Seleccione...</option>
+                        <option>Cédula ciudadana</option>
+                        <option>Pasaporte</option>
+                        <option>Tarjeta de identidad</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="idNumber" class="required-field">Identificación</label>
-                    <input type="text" id="idNumber" th:field="*{identificacion}">
+                    <input type="text" id="idNumber" placeholder="Ingrese número de identificación">
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group">
                     <label for="firstName" class="required-field">Primer nombre</label>
-                    <input type="text" id="firstName" th:field="*{primerNombre}">
+                    <input type="text" id="firstName" placeholder="Ingrese primer nombre">
                 </div>
                 <div class="form-group">
                     <label for="secondName">Segundo nombre</label>
-                    <input type="text" id="secondName" th:field="*{segundoNombre}">
+                    <input type="text" id="secondName" placeholder="Ingrese segundo nombre (opcional)">
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group">
                     <label for="firstLastName" class="required-field">Primer apellido</label>
-                    <input type="text" id="firstLastName" th:field="*{primerApellido}">
+                    <input type="text" id="firstLastName" placeholder="Ingrese primer apellido">
                 </div>
                 <div class="form-group">
                     <label for="secondLastName">Segundo apellido</label>
-                    <input type="text" id="secondLastName" th:field="*{segundoApellido}">
+                    <input type="text" id="secondLastName" placeholder="Ingrese segundo apellido (opcional)">
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group">
                     <label for="gender" class="required-field">Sexo</label>
-                    <select id="gender" th:field="*{genero}">
+                    <select id="gender">
+                        <option value="">Seleccione...</option>
                         <option value="F">Femenino</option>
                         <option value="M">Masculino</option>
                         <option value="O">Otro</option>
@@ -353,7 +342,7 @@
                 </div>
                 <div class="form-group">
                     <label for="bloodType">Grupo sanguíneo</label>
-                    <input type="text" id="bloodType" th:field="*{grupoSanguineo}">
+                    <input type="text" id="bloodType" placeholder="Ingrese grupo sanguíneo (opcional)">
                 </div>
             </div>
         </div>
@@ -364,21 +353,21 @@
             <div class="form-row">
                 <div class="form-group">
                     <label for="address" class="required-field">Dirección</label>
-                    <input type="text" id="address" th:field="*{direccion}">
+                    <input type="text" id="address" placeholder="Ingrese dirección de residencia">
                 </div>
                 <div class="form-group">
                     <label for="phone">Teléfono</label>
-                    <input type="text" id="phone" th:field="*{telefono}">
+                    <input type="text" id="phone" placeholder="Ingrese número de teléfono (opcional)">
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group">
                     <label for="email" class="required-field">Correo electrónico</label>
-                    <input type="email" id="email" th:field="*{email}">
+                    <input type="email" id="email" placeholder="Ingrese correo electrónico">
                 </div>
                 <div class="form-group">
                     <label for="birthDate" class="required-field">Fecha de nacimiento</label>
-                    <input type="date" id="birthDate" th:field="*{fechaNacimiento}">
+                    <input type="date" id="birthDate">
                 </div>
             </div>
         </div>
@@ -389,35 +378,36 @@
             <div class="form-row">
                 <div class="form-group">
                     <label for="contractType" class="required-field">Tipo contrato</label>
-                    <select id="contractType" th:field="*{tipoContrato}">
-                        <option value="FIJO">Fijo</option>
-                        <option value="TEMPORAL">Temporal</option>
-                        <option value="PRESTACION_SERVICIOS">Prestación de servicios</option>
+                    <select id="contractType">
+                        <option value="">Seleccione...</option>
+                        <option>Fijo</option>
+                        <option>Temporal</option>
+                        <option>Prestación de servicios</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="position" class="required-field">Cargo</label>
-                    <input type="text" id="position" th:field="*{cargo}">
+                    <input type="text" id="position" placeholder="Ingrese el cargo del empleado">
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group">
                     <label for="startDate" class="required-field">Fecha inicial contrato</label>
-                    <input type="date" id="startDate" th:field="*{fechaInicioContrato}">
+                    <input type="date" id="startDate">
                 </div>
                 <div class="form-group">
                     <label for="endDate">Fecha final contrato</label>
-                    <input type="date" id="endDate" th:field="*{fechaFinContrato}">
+                    <input type="date" id="endDate">
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group">
                     <label for="status">Estado</label>
-                    <input type="text" id="status" th:field="*{estado}">
+                    <input type="text" id="status" placeholder="Estado del empleado">
                 </div>
                 <div class="form-group">
                     <label for="salary">Salario</label>
-                    <input type="text" id="salary" th:field="*{salario}">
+                    <input type="text" id="salary" placeholder="Ingrese salario">
                 </div>
             </div>
         </div>
@@ -428,11 +418,11 @@
             <div class="form-row">
                 <div class="form-group">
                     <label for="pensionFund">Fondo pensión</label>
-                    <input type="text" id="pensionFund" th:field="*{fondoPension}">
+                    <input type="text" id="pensionFund" placeholder="Ingrese fondo de pensiones">
                 </div>
                 <div class="form-group">
                     <label for="healthFund">Fondo salud</label>
-                    <input type="text" id="healthFund" th:field="*{fondoSalud}">
+                    <input type="text" id="healthFund" placeholder="Ingrese EPS">
                 </div>
             </div>
         </div>
@@ -443,19 +433,20 @@
             <div class="form-row">
                 <div class="form-group">
                     <label for="bankAccount">Cuenta bancaria</label>
-                    <input type="text" id="bankAccount" th:field="*{cuentaBancaria}">
+                    <input type="text" id="bankAccount" placeholder="Número de cuenta bancaria">
                 </div>
                 <div class="form-group">
                     <label for="bank">Banco</label>
-                    <input type="text" id="bank" th:field="*{banco}">
+                    <input type="text" id="bank" placeholder="Nombre del banco">
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group">
                     <label for="accountType">Tipo cuenta</label>
-                    <select id="accountType" th:field="*{tipoCuenta}">
-                        <option value="AHORROS">Ahorros</option>
-                        <option value="CORRIENTE">Corriente</option>
+                    <select id="accountType">
+                        <option value="">Seleccione...</option>
+                        <option>Ahorros</option>
+                        <option>Corriente</option>
                     </select>
                 </div>
             </div>
@@ -477,26 +468,17 @@
 
         <!-- Botones de acción -->
         <div class="action-buttons">
-            <button type="button" class="action-btn back-btn" onclick="window.location.href='/empleados'">
+            <button class="action-btn back-btn" id="backBtn">
                 <i class="fas fa-arrow-left"></i> Atrás
             </button>
-            <button type="button" class="action-btn exit-btn" onclick="window.location.href='/home'">
+            <button class="action-btn exit-btn" id="exitBtn">
                 <i class="fas fa-sign-out-alt"></i> Salir
             </button>
-            <button type="button" class="action-btn view-btn">
-                <i class="fas fa-eye"></i> Ver en pantalla
-            </button>
-            <button type="button" class="action-btn excel-btn">
-                <i class="fas fa-file-excel"></i> Excel
-            </button>
-            <button type="button" class="action-btn pdf-btn">
-                <i class="fas fa-file-pdf"></i> PDF
-            </button>
-            <button type="submit" class="action-btn save-btn">
+            <button class="action-btn save-btn" id="saveBtn">
                 <i class="fas fa-save"></i> Guardar
             </button>
         </div>
-    </form>
+    </div>
 </div>
 
 <!-- Pie de página con fecha y hora -->
@@ -523,6 +505,23 @@
     // Actualizar inmediatamente y luego cada segundo
     updateDateTime();
     setInterval(updateDateTime, 1000);
+
+    // Eventos para los botones
+    document.getElementById('logoutBtn').addEventListener('click', function() {
+        window.location.href = 'home';
+    });
+
+    document.getElementById('backBtn').addEventListener('click', function() {
+        window.location.href = 'Empleados';
+    });
+
+    document.getElementById('exitBtn').addEventListener('click', function() {
+        window.location.href = 'login';
+    });
+
+    document.getElementById('saveBtn').addEventListener('click', function() {
+        window.location.href = 'exito';
+    });
 </script>
 </body>
 </html>
