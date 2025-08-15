@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -88,8 +88,6 @@
             border-bottom: 3px solid transparent;
             font-size: 14px;
             color: white;
-            opacity: 0.6;
-            pointer-events: none;
         }
 
         .nav-item:hover {
@@ -150,6 +148,11 @@
             color: #4a5568;
         }
 
+        .required-field::after {
+            content: " *";
+            color: #e53e3e;
+        }
+
         .form-group input,
         .form-group select {
             width: 100%;
@@ -158,11 +161,6 @@
             border-radius: 6px;
             font-size: 14px;
             transition: all 0.3s;
-        }
-
-        .required-field::after {
-            content: " *";
-            color: #e53e3e;
         }
 
         .form-group input:focus,
@@ -221,6 +219,21 @@
             gap: 8px;
         }
 
+        .view-btn {
+            background-color: #3182ce;
+            color: white;
+        }
+
+        .excel-btn {
+            background-color: #38a169;
+            color: white;
+        }
+
+        .pdf-btn {
+            background-color: #e53e3e;
+            color: white;
+        }
+
         .back-btn {
             background-color: #718096;
             color: white;
@@ -255,6 +268,64 @@
         #datetime {
             font-family: 'Courier New', monospace;
         }
+
+        /* Mensajes de error */
+        .error-message {
+            color: #e53e3e;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        /* Loading state */
+        .btn-loading {
+            position: relative;
+            pointer-events: none;
+        }
+
+        .btn-loading::after {
+            content: "";
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+            border: 3px solid transparent;
+            border-top-color: #ffffff;
+            border-radius: 50%;
+            animation: button-loading-spinner 1s ease infinite;
+        }
+
+        @keyframes button-loading-spinner {
+            from {
+                transform: rotate(0turn);
+            }
+            to {
+                transform: rotate(1turn);
+            }
+        }
+
+        /* Alertas */
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+        }
+
+        .alert-success {
+            color: #155724;
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+        }
+
+        .alert-danger {
+            color: #721c24;
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
     </style>
     <!-- Iconos de Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -266,7 +337,7 @@
 
     <div class="user-info">
         <span>Mayerly Panteves Duran (ADMON)</span>
-        <button class="logout-btn" id="logoutBtn">
+        <button class="logout-btn" onclick="window.location.href='/login'">
             <i class="fas fa-sign-out-alt"></i> Salir
         </button>
     </div>
@@ -275,13 +346,13 @@
 <!-- Barra de navegación -->
 <div class="nav-bar">
     <ul class="nav-menu">
-        <li class="nav-item">
+        <li class="nav-item" onclick="window.location.href='/home'">
             <i class="fas fa-cog"></i> Sistema
         </li>
-        <li class="nav-item">
+        <li class="nav-item" onclick="window.location.href='/Reportes'">
             <i class="fas fa-chart-bar"></i> Reportes
         </li>
-        <li class="nav-item">
+        <li class="nav-item" onclick="window.location.href='/Empleados'">
             <i class="fas fa-users"></i> Empleados
         </li>
     </ul>
@@ -291,58 +362,81 @@
 <div class="main-content">
     <h2><i class="fas fa-user-plus"></i> Formulario de Empleado</h2>
 
-    <div class="employee-form">
+    <!-- Mensajes de éxito/error -->
+    <div th:if="${success}" class="alert alert-success" role="alert">
+        <span th:text="${success}"></span>
+    </div>
+    <div th:if="${error}" class="alert alert-danger" role="alert">
+        <span th:text="${error}"></span>
+    </div>
+
+    <form id="empleadoForm" class="employee-form" th:action="@{/empleados/guardar}" th:object="${empleado}" method="post">
         <!-- Información Básica -->
         <div class="form-section">
             <h3><i class="fas fa-id-card"></i> Información Básica</h3>
             <div class="form-row">
                 <div class="form-group">
-                    <label for="docType" class="required-field">Tipo documento</label>
-                    <select id="docType">
+                    <label for="tipoDocumento" class="required-field">Tipo documento</label>
+                    <select id="tipoDocumento" th:field="*{tipoDocumento}" required>
                         <option value="">Seleccione...</option>
-                        <option>Cédula ciudadana</option>
-                        <option>Pasaporte</option>
-                        <option>Tarjeta de identidad</option>
+                        <option value="CC">Cédula ciudadana</option>
+                        <option value="TI">Tarjeta de identidad</option>
+                        <option value="CE">Cédula extranjería</option>
                     </select>
+                    <div class="error-message" th:if="${#fields.hasErrors('tipoDocumento')}" th:errors="*{tipoDocumento}"></div>
                 </div>
                 <div class="form-group">
-                    <label for="idNumber" class="required-field">Identificación</label>
-                    <input type="text" id="idNumber" placeholder="Ingrese número de identificación">
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="firstName" class="required-field">Primer nombre</label>
-                    <input type="text" id="firstName" placeholder="Ingrese primer nombre">
-                </div>
-                <div class="form-group">
-                    <label for="secondName">Segundo nombre</label>
-                    <input type="text" id="secondName" placeholder="Ingrese segundo nombre (opcional)">
+                    <label for="numeroDocumento" class="required-field">Identificación</label>
+                    <input type="text" id="numeroDocumento" th:field="*{numeroDocumento}" required>
+                    <div class="error-message" th:if="${#fields.hasErrors('numeroDocumento')}" th:errors="*{numeroDocumento}"></div>
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group">
-                    <label for="firstLastName" class="required-field">Primer apellido</label>
-                    <input type="text" id="firstLastName" placeholder="Ingrese primer apellido">
+                    <label for="primerNombre" class="required-field">Primer nombre</label>
+                    <input type="text" id="primerNombre" th:field="*{primerNombre}" required>
+                    <div class="error-message" th:if="${#fields.hasErrors('primerNombre')}" th:errors="*{primerNombre}"></div>
                 </div>
                 <div class="form-group">
-                    <label for="secondLastName">Segundo apellido</label>
-                    <input type="text" id="secondLastName" placeholder="Ingrese segundo apellido (opcional)">
+                    <label for="segundoNombre">Segundo nombre</label>
+                    <input type="text" id="segundoNombre" th:field="*{segundoNombre}">
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group">
-                    <label for="gender" class="required-field">Sexo</label>
-                    <select id="gender">
+                    <label for="primerApellido" class="required-field">Primer apellido</label>
+                    <input type="text" id="primerApellido" th:field="*{primerApellido}" required>
+                    <div class="error-message" th:if="${#fields.hasErrors('primerApellido')}" th:errors="*{primerApellido}"></div>
+                </div>
+                <div class="form-group">
+                    <label for="segundoApellido">Segundo apellido</label>
+                    <input type="text" id="segundoApellido" th:field="*{segundoApellido}">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="sexo" class="required-field">Sexo</label>
+                    <select id="sexo" th:field="*{sexo}" required>
                         <option value="">Seleccione...</option>
                         <option value="F">Femenino</option>
                         <option value="M">Masculino</option>
                         <option value="O">Otro</option>
                     </select>
+                    <div class="error-message" th:if="${#fields.hasErrors('sexo')}" th:errors="*{sexo}"></div>
                 </div>
                 <div class="form-group">
-                    <label for="bloodType">Grupo sanguíneo</label>
-                    <input type="text" id="bloodType" placeholder="Ingrese grupo sanguíneo (opcional)">
+                    <label for="grupoSanguineo">Grupo sanguíneo</label>
+                    <select id="grupoSanguineo" th:field="*{grupoSanguineo}">
+                        <option value="">Seleccione...</option>
+                        <option value="A+">A+</option>
+                        <option value="A-">A-</option>
+                        <option value="B+">B+</option>
+                        <option value="B-">B-</option>
+                        <option value="AB+">AB+</option>
+                        <option value="AB-">AB-</option>
+                        <option value="O+">O+</option>
+                        <option value="O-">O-</option>
+                    </select>
                 </div>
             </div>
         </div>
@@ -352,62 +446,26 @@
             <h3><i class="fas fa-address-book"></i> Información de Contacto</h3>
             <div class="form-row">
                 <div class="form-group">
-                    <label for="address" class="required-field">Dirección</label>
-                    <input type="text" id="address" placeholder="Ingrese dirección de residencia">
+                    <label for="direccion" class="required-field">Dirección</label>
+                    <input type="text" id="direccion" th:field="*{direccion}" required>
+                    <div class="error-message" th:if="${#fields.hasErrors('direccion')}" th:errors="*{direccion}"></div>
                 </div>
                 <div class="form-group">
-                    <label for="phone">Teléfono</label>
-                    <input type="text" id="phone" placeholder="Ingrese número de teléfono (opcional)">
+                    <label for="telefono">Teléfono</label>
+                    <input type="tel" id="telefono" th:field="*{telefono}" pattern="[0-9]{7,15}">
+                    <div class="error-message" th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}"></div>
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group">
                     <label for="email" class="required-field">Correo electrónico</label>
-                    <input type="email" id="email" placeholder="Ingrese correo electrónico">
+                    <input type="email" id="email" th:field="*{email}" required>
+                    <div class="error-message" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
                 </div>
                 <div class="form-group">
-                    <label for="birthDate" class="required-field">Fecha de nacimiento</label>
-                    <input type="date" id="birthDate">
-                </div>
-            </div>
-        </div>
-
-        <!-- Información Laboral -->
-        <div class="form-section">
-            <h3><i class="fas fa-briefcase"></i> Información Laboral</h3>
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="contractType" class="required-field">Tipo contrato</label>
-                    <select id="contractType">
-                        <option value="">Seleccione...</option>
-                        <option>Fijo</option>
-                        <option>Temporal</option>
-                        <option>Prestación de servicios</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="position" class="required-field">Cargo</label>
-                    <input type="text" id="position" placeholder="Ingrese el cargo del empleado">
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="startDate" class="required-field">Fecha inicial contrato</label>
-                    <input type="date" id="startDate">
-                </div>
-                <div class="form-group">
-                    <label for="endDate">Fecha final contrato</label>
-                    <input type="date" id="endDate">
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="status">Estado</label>
-                    <input type="text" id="status" placeholder="Estado del empleado">
-                </div>
-                <div class="form-group">
-                    <label for="salary">Salario</label>
-                    <input type="text" id="salary" placeholder="Ingrese salario">
+                    <label for="fechaNacimiento" class="required-field">Fecha de nacimiento</label>
+                    <input type="date" id="fechaNacimiento" th:field="*{fechaNacimiento}" required>
+                    <div class="error-message" th:if="${#fields.hasErrors('fechaNacimiento')}" th:errors="*{fechaNacimiento}"></div>
                 </div>
             </div>
         </div>
@@ -417,12 +475,12 @@
             <h3><i class="fas fa-shield-alt"></i> Seguridad Social</h3>
             <div class="form-row">
                 <div class="form-group">
-                    <label for="pensionFund">Fondo pensión</label>
-                    <input type="text" id="pensionFund" placeholder="Ingrese fondo de pensiones">
+                    <label for="fondoPension">Fondo pensión</label>
+                    <input type="text" id="fondoPension" th:field="*{fondoPension}">
                 </div>
                 <div class="form-group">
-                    <label for="healthFund">Fondo salud</label>
-                    <input type="text" id="healthFund" placeholder="Ingrese EPS">
+                    <label for="fondoSalud">Fondo salud</label>
+                    <input type="text" id="fondoSalud" th:field="*{fondoSalud}">
                 </div>
             </div>
         </div>
@@ -432,21 +490,21 @@
             <h3><i class="fas fa-piggy-bank"></i> Información Bancaria</h3>
             <div class="form-row">
                 <div class="form-group">
-                    <label for="bankAccount">Cuenta bancaria</label>
-                    <input type="text" id="bankAccount" placeholder="Número de cuenta bancaria">
+                    <label for="cuentaBancaria">Cuenta bancaria</label>
+                    <input type="text" id="cuentaBancaria" th:field="*{cuentaBancaria}">
                 </div>
                 <div class="form-group">
-                    <label for="bank">Banco</label>
-                    <input type="text" id="bank" placeholder="Nombre del banco">
+                    <label for="banco">Banco</label>
+                    <input type="text" id="banco" th:field="*{banco}">
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group">
-                    <label for="accountType">Tipo cuenta</label>
-                    <select id="accountType">
+                    <label for="tipoCuenta">Tipo cuenta</label>
+                    <select id="tipoCuenta" th:field="*{tipoCuenta}">
                         <option value="">Seleccione...</option>
-                        <option>Ahorros</option>
-                        <option>Corriente</option>
+                        <option value="Ahorros">Ahorros</option>
+                        <option value="Corriente">Corriente</option>
                     </select>
                 </div>
             </div>
@@ -468,17 +526,26 @@
 
         <!-- Botones de acción -->
         <div class="action-buttons">
-            <button class="action-btn back-btn" id="backBtn">
+            <button type="button" class="action-btn back-btn" onclick="window.location.href='/empleados'">
                 <i class="fas fa-arrow-left"></i> Atrás
             </button>
-            <button class="action-btn exit-btn" id="exitBtn">
+            <button type="button" class="action-btn exit-btn" onclick="window.location.href='/login'">
                 <i class="fas fa-sign-out-alt"></i> Salir
             </button>
-            <button class="action-btn save-btn" id="saveBtn">
+            <button type="button" class="action-btn view-btn" id="viewBtn">
+                <i class="fas fa-eye"></i> Ver en pantalla
+            </button>
+            <button type="button" class="action-btn excel-btn" id="excelBtn">
+                <i class="fas fa-file-excel"></i> Excel
+            </button>
+            <button type="button" class="action-btn pdf-btn" id="pdfBtn">
+                <i class="fas fa-file-pdf"></i> PDF
+            </button>
+            <button type="submit" class="action-btn save-btn" id="saveBtn">
                 <i class="fas fa-save"></i> Guardar
             </button>
         </div>
-    </div>
+    </form>
 </div>
 
 <!-- Pie de página con fecha y hora -->
@@ -506,21 +573,65 @@
     updateDateTime();
     setInterval(updateDateTime, 1000);
 
-    // Eventos para los botones
-    document.getElementById('logoutBtn').addEventListener('click', function() {
-        window.location.href = 'home';
+    // Manejar el envío del formulario con AJAX
+    document.getElementById('empleadoForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const saveBtn = document.getElementById('saveBtn');
+        saveBtn.classList.add('btn-loading');
+        saveBtn.disabled = true;
+
+        const formData = new FormData(this);
+
+        fetch(this.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Accept': 'application/json'
+            }
+        })
+            .then(response => {
+                if(response.redirected) {
+                    window.location.href = response.url;
+                } else if(!response.ok) {
+                    throw new Error('Error en la respuesta del servidor');
+                }
+                return response.json();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error al guardar el empleado: ' + error.message);
+            })
+            .finally(() => {
+                saveBtn.classList.remove('btn-loading');
+                saveBtn.disabled = false;
+            });
     });
 
-    document.getElementById('backBtn').addEventListener('click', function() {
-        window.location.href = 'Empleados';
+    // Botón para vista previa
+    document.getElementById('viewBtn').addEventListener('click', function() {
+        alert('Vista previa del empleado (implementar lógica específica)');
     });
 
-    document.getElementById('exitBtn').addEventListener('click', function() {
-        window.location.href = 'login';
+    // Botón para exportar a Excel
+    document.getElementById('excelBtn').addEventListener('click', function() {
+        window.location.href = '/empleados/exportar/excel';
     });
 
-    document.getElementById('saveBtn').addEventListener('click', function() {
-        window.location.href = 'exito';
+    // Botón para exportar a PDF
+    document.getElementById('pdfBtn').addEventListener('click', function() {
+        window.location.href = '/empleados/exportar/pdf';
+    });
+
+    // Validación en tiempo real
+    document.querySelectorAll('input[required], select[required]').forEach(input => {
+        input.addEventListener('blur', function() {
+            if(!this.value.trim()) {
+                this.style.borderColor = '#e53e3e';
+            } else {
+                this.style.borderColor = '#e2e8f0';
+            }
+        });
     });
 </script>
 </body>

@@ -39,6 +39,6 @@ public class MainController {
 
     @GetMapping("/Nuevoempleado")
     public String Nuevoempleado() {
-        return "formulario-empleado";
+        return "informacion-empleado";
     }
 }
