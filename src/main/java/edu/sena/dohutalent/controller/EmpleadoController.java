@@ -19,7 +19,7 @@ public class EmpleadoController {
     @GetMapping("/formulario")
     public String mostrarFormulario(Model model) {
         model.addAttribute("empleado", new Empleado());
-        return "Informacion-empleado";
+        return "Informacion-empleado"; // Nombre del archivo HTML (sin extensión)
     }
 
     @PostMapping("/guardar")
