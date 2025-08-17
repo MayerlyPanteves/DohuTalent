@@ -11,8 +11,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/empleados")
 public class EmpleadoController {
 
+    private final EmpleadoService empleadoService;
+
     @Autowired
-    private EmpleadoService empleadoService;
+    public EmpleadoController(EmpleadoService empleadoService) {
+        this.empleadoService = empleadoService;
+    }
 
     @GetMapping
     public String listarEmpleados(Model model) {
@@ -33,30 +37,14 @@ public class EmpleadoController {
     }
 
     @GetMapping("/editar/{id}")
-    public String mostrarFormularioEditar(@PathVariable Long id, Model model) {
+    public String mostrarFormularioEditar(@PathVariable String id, Model model) {
         model.addAttribute("empleado", empleadoService.findById(id));
         return "empleados/formulario";
     }
 
     @GetMapping("/eliminar/{id}")
-    public String eliminarEmpleado(@PathVariable Long id) {
+    public String eliminarEmpleado(@PathVariable String id) {
         empleadoService.deleteById(id);
         return "redirect:/empleados";
-    }
-
-    @GetMapping("/buscar")
-    public String buscarPorApellidos(
-            @RequestParam(required = false) String segundoApellido,
-            @RequestParam(required = false) String primerApellido,
-            Model model) {
-
-        if (segundoApellido != null && !segundoApellido.isEmpty()) {
-            model.addAttribute("empleados", empleadoService.findBySegundoApellido(segundoApellido));
-        } else if (primerApellido != null && !primerApellido.isEmpty()) {
-            model.addAttribute("empleados", empleadoService.findByPrimerApellido(primerApellido));
-        } else {
-            model.addAttribute("empleados", empleadoService.findAll());
-        }
-        return "empleados/lista";
     }
 }

@@ -342,7 +342,7 @@
                 <a class="page-link" th:href="@{/empleados(page=1)}">Primera</a>
             </li>
             <li class="page-item" th:classappend="${paginaActual == 1} ? 'disabled' : ''">
-                <a class="page-link" th:href="@{/empleados(page=${paginaActual-1})}">Anterior</a>
+                <a class="page-link" th:href="@{/templates/empleados(page=${paginaActual-1})}">Anterior</a>
             </li>
 
             <li class="page-item" th:each="i : ${#numbers.sequence(1, totalPaginas)}"

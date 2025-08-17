@@ -21,15 +21,10 @@ public class SecurityConfig {
                                 "/error**",
                                 "/webjars/**",
                                 "/images/**",
-                                "/empleados/**",
                                 "/static/**",
                                 "/css/**",
                                 "/js/**",
-                                "/empleados/**",
-                                "/empleados/formulario",
-                                "/empleados/guardar",
-                                "/empleados/Empleados",
-                                "/empleados/exito"
+                                "/empleados/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
@@ -38,13 +33,7 @@ public class SecurityConfig {
                         .defaultSuccessUrl("/home", true)
                 )
                 .logout(logout -> logout
-                        .logoutSuccessUrl("/").permitAll()
-                        .deleteCookies("JSESSIONID")
-                        .invalidateHttpSession(true)
-                )
-                .csrf(csrf -> csrf
-                        .ignoringRequestMatchers("/api/**") // APIs que no necesitan CSRF
-                        .requireCsrfProtectionMatcher(new AntPathRequestMatcher("/empleados/guardar"))
+                        .permitAll()
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
