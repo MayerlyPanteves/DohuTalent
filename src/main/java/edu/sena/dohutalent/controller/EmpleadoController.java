@@ -18,30 +18,35 @@ public class EmpleadoController {
         this.empleadoService = empleadoService;
     }
 
+    // Muestra la página estática
     @GetMapping
-    public String listarEmpleados(Model model) {
-        model.addAttribute("empleados", empleadoService.findAll());
-        return "empleados/lista";
+    public String mostrarListaEstatica() {
+        return "redirect:/empleados/Empleados.html";
     }
 
+    // Muestra formulario para nuevo empleado
     @GetMapping("/nuevo")
     public String mostrarFormularioNuevo(Model model) {
         model.addAttribute("empleado", new Empleado());
         return "empleados/formulario";
     }
 
+    // Procesa el formulario
     @PostMapping("/guardar")
     public String guardarEmpleado(@ModelAttribute Empleado empleado) {
         empleadoService.save(empleado);
         return "redirect:/empleados";
     }
 
-    @GetMapping("/editar/{id}")
-    public String mostrarFormularioEditar(@PathVariable String id, Model model) {
-        model.addAttribute("empleado", empleadoService.findById(id));
-        return "empleados/formulario";
+    // Muestra detalles de un empleado
+    @GetMapping("/ver/{id}")
+    public String verDetalles(@PathVariable String id, Model model) {
+        Empleado empleado = empleadoService.findById(id);
+        model.addAttribute("empleado", empleado);
+        return "empleados/detalle";
     }
 
+    // Elimina un empleado
     @GetMapping("/eliminar/{id}")
     public String eliminarEmpleado(@PathVariable String id) {
         empleadoService.deleteById(id);
