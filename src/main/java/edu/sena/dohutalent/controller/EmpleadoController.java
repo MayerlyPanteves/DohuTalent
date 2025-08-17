@@ -21,7 +21,7 @@ public class EmpleadoController {
     // Muestra la página estática
     @GetMapping
     public String mostrarListaEstatica() {
-        return "redirect:/empleados/Empleados.html";
+        return "forward:/empleados/Empleados.html";
     }
 
     // Muestra formulario para nuevo empleado
