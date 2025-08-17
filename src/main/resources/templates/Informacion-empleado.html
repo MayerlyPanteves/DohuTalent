@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -88,12 +88,10 @@
             border-bottom: 3px solid transparent;
             font-size: 14px;
             color: white;
-            opacity: 0.6;
-            pointer-events: none;
         }
 
-        .nav-item:hover {
-            background-color: rgba(255,255,255,0.2);
+        .nav-item.active {
+            opacity: 1;
             border-bottom-color: #bbdefb;
         }
 
@@ -113,6 +111,18 @@
             padding: 30px;
             border-radius: 8px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .form-title {
+            color: #0d47a1;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #bbdefb;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .form-section {
@@ -172,33 +182,6 @@
             box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.2);
         }
 
-        /* Sección de documentos */
-        .documents-section {
-            margin-top: 30px;
-        }
-
-        .document-types {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .document-type {
-            background-color: #ebf8ff;
-            padding: 10px 15px;
-            border-radius: 6px;
-            cursor: pointer;
-            border: 1px solid #bee3f8;
-            transition: all 0.2s;
-            font-size: 14px;
-        }
-
-        .document-type:hover {
-            background-color: #bee3f8;
-            transform: translateY(-2px);
-        }
-
         /* Botones de acción */
         .action-buttons {
             margin-top: 30px;
@@ -248,12 +231,16 @@
             padding: 15px;
             text-align: center;
             font-size: 14px;
-            position: sticky;
-            bottom: 0;
         }
 
         #datetime {
             font-family: 'Courier New', monospace;
+        }
+
+        .error-message {
+            color: #e53e3e;
+            font-size: 12px;
+            margin-top: 5px;
         }
     </style>
     <!-- Iconos de Font Awesome -->
@@ -281,7 +268,7 @@
         <li class="nav-item">
             <i class="fas fa-chart-bar"></i> Reportes
         </li>
-        <li class="nav-item">
+        <li class="nav-item active">
             <i class="fas fa-users"></i> Empleados
         </li>
     </ul>
@@ -289,196 +276,109 @@
 
 <!-- Contenido principal -->
 <div class="main-content">
-    <h2><i class="fas fa-user-plus"></i> Formulario de Empleado</h2>
+    <form th:action="@{/empleados/guardar}" method="post" th:object="${empleado}" id="empleadoForm">
+        <div class="employee-form">
+            <h2 class="form-title"><i class="fas fa-user-plus"></i> Formulario de Empleado</h2>
 
-    <div class="employee-form">
-        <!-- Información Básica -->
-        <div class="form-section">
-            <h3><i class="fas fa-id-card"></i> Información Básica</h3>
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="docType" class="required-field">Tipo documento</label>
-                    <select id="docType">
-                        <option value="">Seleccione...</option>
-                        <option>Cédula ciudadana</option>
-                        <option>Pasaporte</option>
-                        <option>Tarjeta de identidad</option>
-                    </select>
+            <!-- Información Básica -->
+            <div class="form-section">
+                <h3><i class="fas fa-id-card"></i> Información Básica</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="tipoDocumento" class="required-field">Tipo documento</label>
+                        <select id="tipoDocumento" th:field="*{tipoDocumento}" required>
+                            <option value="">Seleccione...</option>
+                            <option value="Cédula ciudadana">Cédula ciudadana</option>
+                            <option value="Pasaporte">Pasaporte</option>
+                            <option value="Tarjeta de identidad">Tarjeta de identidad</option>
+                        </select>
+                        <div class="error-message" th:if="${#fields.hasErrors('tipoDocumento')}" th:errors="*{tipoDocumento}"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="numeroDocumento" class="required-field">Número documento</label>
+                        <input type="text" id="numeroDocumento" th:field="*{numeroDocumento}" placeholder="Ingrese número de documento" required>
+                        <div class="error-message" th:if="${#fields.hasErrors('numeroDocumento')}" th:errors="*{numeroDocumento}"></div>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="idNumber" class="required-field">Identificación</label>
-                    <input type="text" id="idNumber" placeholder="Ingrese número de identificación">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="primerNombre" class="required-field">Primer nombre</label>
+                        <input type="text" id="primerNombre" th:field="*{primerNombre}" placeholder="Ingrese primer nombre" required>
+                        <div class="error-message" th:if="${#fields.hasErrors('primerNombre')}" th:errors="*{primerNombre}"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="segundoNombre">Segundo nombre</label>
+                        <input type="text" id="segundoNombre" th:field="*{segundoNombre}" placeholder="Ingrese segundo nombre (opcional)">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="primerApellido" class="required-field">Primer apellido</label>
+                        <input type="text" id="primerApellido" th:field="*{primerApellido}" placeholder="Ingrese primer apellido" required>
+                        <div class="error-message" th:if="${#fields.hasErrors('primerApellido')}" th:errors="*{primerApellido}"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="segundoApellido">Segundo apellido</label>
+                        <input type="text" id="segundoApellido" th:field="*{segundoApellido}" placeholder="Ingrese segundo apellido (opcional)">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="sexo" class="required-field">Sexo</label>
+                        <select id="sexo" th:field="*{sexo}" required>
+                            <option value="">Seleccione...</option>
+                            <option value="F">Femenino</option>
+                            <option value="M">Masculino</option>
+                            <option value="O">Otro</option>
+                        </select>
+                        <div class="error-message" th:if="${#fields.hasErrors('sexo')}" th:errors="*{sexo}"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="grupoSanguineo">Grupo sanguíneo</label>
+                        <input type="text" id="grupoSanguineo" th:field="*{grupoSanguineo}" placeholder="Ingrese grupo sanguíneo (opcional)">
+                    </div>
                 </div>
             </div>
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="firstName" class="required-field">Primer nombre</label>
-                    <input type="text" id="firstName" placeholder="Ingrese primer nombre">
+
+            <!-- Información de Contacto -->
+            <div class="form-section">
+                <h3><i class="fas fa-address-book"></i> Información de Contacto</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="direccion" class="required-field">Dirección</label>
+                        <input type="text" id="direccion" th:field="*{direccion}" placeholder="Ingrese dirección de residencia" required>
+                        <div class="error-message" th:if="${#fields.hasErrors('direccion')}" th:errors="*{direccion}"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="telefono">Teléfono</label>
+                        <input type="text" id="telefono" th:field="*{telefono}" placeholder="Ingrese número de teléfono (opcional)">
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="secondName">Segundo nombre</label>
-                    <input type="text" id="secondName" placeholder="Ingrese segundo nombre (opcional)">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="email" class="required-field">Correo electrónico</label>
+                        <input type="email" id="email" th:field="*{email}" placeholder="Ingrese correo electrónico" required>
+                        <div class="error-message" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="fechaNacimiento" class="required-field">Fecha de nacimiento</label>
+                        <input type="date" id="fechaNacimiento" th:field="*{fechaNacimiento}" required>
+                        <div class="error-message" th:if="${#fields.hasErrors('fechaNacimiento')}" th:errors="*{fechaNacimiento}"></div>
+                    </div>
                 </div>
             </div>
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="firstLastName" class="required-field">Primer apellido</label>
-                    <input type="text" id="firstLastName" placeholder="Ingrese primer apellido">
-                </div>
-                <div class="form-group">
-                    <label for="secondLastName">Segundo apellido</label>
-                    <input type="text" id="secondLastName" placeholder="Ingrese segundo apellido (opcional)">
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="gender" class="required-field">Sexo</label>
-                    <select id="gender">
-                        <option value="">Seleccione...</option>
-                        <option value="F">Femenino</option>
-                        <option value="M">Masculino</option>
-                        <option value="O">Otro</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="bloodType">Grupo sanguíneo</label>
-                    <input type="text" id="bloodType" placeholder="Ingrese grupo sanguíneo (opcional)">
-                </div>
+
+            <!-- Botones de acción -->
+            <div class="action-buttons">
+                <button type="button" class="action-btn back-btn" id="backBtn">
+                    <i class="fas fa-arrow-left"></i> Atrás
+                </button>
+                <button type="submit" class="action-btn save-btn" id="saveBtn">
+                    <i class="fas fa-save"></i> Guardar
+                </button>
             </div>
         </div>
-
-        <!-- Información de Contacto -->
-        <div class="form-section">
-            <h3><i class="fas fa-address-book"></i> Información de Contacto</h3>
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="address" class="required-field">Dirección</label>
-                    <input type="text" id="address" placeholder="Ingrese dirección de residencia">
-                </div>
-                <div class="form-group">
-                    <label for="phone">Teléfono</label>
-                    <input type="text" id="phone" placeholder="Ingrese número de teléfono (opcional)">
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="email" class="required-field">Correo electrónico</label>
-                    <input type="email" id="email" placeholder="Ingrese correo electrónico">
-                </div>
-                <div class="form-group">
-                    <label for="birthDate" class="required-field">Fecha de nacimiento</label>
-                    <input type="date" id="birthDate">
-                </div>
-            </div>
-        </div>
-
-        <!-- Información Laboral -->
-        <div class="form-section">
-            <h3><i class="fas fa-briefcase"></i> Información Laboral</h3>
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="contractType" class="required-field">Tipo contrato</label>
-                    <select id="contractType">
-                        <option value="">Seleccione...</option>
-                        <option>Fijo</option>
-                        <option>Temporal</option>
-                        <option>Prestación de servicios</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="position" class="required-field">Cargo</label>
-                    <input type="text" id="position" placeholder="Ingrese el cargo del empleado">
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="startDate" class="required-field">Fecha inicial contrato</label>
-                    <input type="date" id="startDate">
-                </div>
-                <div class="form-group">
-                    <label for="endDate">Fecha final contrato</label>
-                    <input type="date" id="endDate">
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="status">Estado</label>
-                    <input type="text" id="status" placeholder="Estado del empleado">
-                </div>
-                <div class="form-group">
-                    <label for="salary">Salario</label>
-                    <input type="text" id="salary" placeholder="Ingrese salario">
-                </div>
-            </div>
-        </div>
-
-        <!-- Información de Seguridad Social -->
-        <div class="form-section">
-            <h3><i class="fas fa-shield-alt"></i> Seguridad Social</h3>
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="pensionFund">Fondo pensión</label>
-                    <input type="text" id="pensionFund" placeholder="Ingrese fondo de pensiones">
-                </div>
-                <div class="form-group">
-                    <label for="healthFund">Fondo salud</label>
-                    <input type="text" id="healthFund" placeholder="Ingrese EPS">
-                </div>
-            </div>
-        </div>
-
-        <!-- Información Bancaria -->
-        <div class="form-section">
-            <h3><i class="fas fa-piggy-bank"></i> Información Bancaria</h3>
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="bankAccount">Cuenta bancaria</label>
-                    <input type="text" id="bankAccount" placeholder="Número de cuenta bancaria">
-                </div>
-                <div class="form-group">
-                    <label for="bank">Banco</label>
-                    <input type="text" id="bank" placeholder="Nombre del banco">
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="accountType">Tipo cuenta</label>
-                    <select id="accountType">
-                        <option value="">Seleccione...</option>
-                        <option>Ahorros</option>
-                        <option>Corriente</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-
-        <!-- Documentos Digitales -->
-        <div class="documents-section">
-            <h3><i class="fas fa-file-alt"></i> Documentos Digitales</h3>
-            <div class="document-types">
-                <div class="document-type"><i class="fas fa-id-card"></i> Identificación</div>
-                <div class="document-type"><i class="fas fa-file-contract"></i> Contratos</div>
-                <div class="document-type"><i class="fas fa-certificate"></i> Diplomas</div>
-                <div class="document-type"><i class="fas fa-file-medical"></i> Exámenes médicos</div>
-                <div class="document-type"><i class="fas fa-chart-line"></i> Evaluación desempeño</div>
-                <div class="document-type"><i class="fas fa-file-invoice-dollar"></i> Pólizas</div>
-                <div class="document-type"><i class="fas fa-ellipsis-h"></i> Otros</div>
-            </div>
-        </div>
-
-        <!-- Botones de acción -->
-        <div class="action-buttons">
-            <button class="action-btn back-btn" id="backBtn">
-                <i class="fas fa-arrow-left"></i> Atrás
-            </button>
-            <button class="action-btn exit-btn" id="exitBtn">
-                <i class="fas fa-sign-out-alt"></i> Salir
-            </button>
-            <button class="action-btn save-btn" id="saveBtn">
-                <i class="fas fa-save"></i> Guardar
-            </button>
-        </div>
-    </div>
+    </form>
 </div>
 
 <!-- Pie de página con fecha y hora -->
@@ -512,15 +412,13 @@
     });
 
     document.getElementById('backBtn').addEventListener('click', function() {
-        window.location.href = '/Empleados';
+        window.location.href = '/empleados';
     });
 
-    document.getElementById('exitBtn').addEventListener('click', function() {
-        window.location.href = '/home';
-    });
-
-    document.getElementById('saveBtn').addEventListener('click', function() {
-        window.location.href = '/empleados/exito';
+    // Validación del formulario antes de enviar
+    document.getElementById('empleadoForm').addEventListener('submit', function(event) {
+        // Puedes agregar validaciones adicionales aquí si es necesario
+        console.log('Formulario enviado');
     });
 </script>
 </body>

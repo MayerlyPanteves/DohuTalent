@@ -33,8 +33,8 @@ document.addEventListener('DOMContentLoaded', () => {
     Database.init();
 
     // Verificar autenticación en páginas protegidas
-    if(!window.location.pathname.includes('login.html')) {
+    if(!window.location.pathname.includes('login')) {
         const user = JSON.parse(sessionStorage.getItem('currentUser'));
-        if(!user) window.location.href = 'login.html';
+        if(!user) window.location.href = 'login';
     }
 });
