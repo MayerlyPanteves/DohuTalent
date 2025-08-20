@@ -21,12 +21,12 @@ public class EmpleadoController {
     // Muestra la página estática
     @GetMapping
     public String mostrarListaEstatica() {
-        return "forward:/empleados/Empleados.html";
+        return "redirect:/empleados/lista.html";
     }
 
     // Muestra formulario para nuevo empleado
     @GetMapping("/nuevo")
-    public String mostrarFormularioNuevo(Model model) {
+    public String mostrarFormulario(Model model) {
         model.addAttribute("empleado", new Empleado());
         return "empleados/formulario";
     }
@@ -34,7 +34,6 @@ public class EmpleadoController {
     // Procesa el formulario
     @PostMapping("/guardar")
     public String guardarEmpleado(@ModelAttribute Empleado empleado) {
-        empleadoService.save(empleado);
         return "redirect:/empleados";
     }
 

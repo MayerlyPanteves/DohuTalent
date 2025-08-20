@@ -20,12 +20,11 @@ public class SecurityConfig {
                                 "/login**",
                                 "/error**",
                                 "/webjars/**",
-                                "/images/**",
                                 "/static/**",
                                 "/css/**",
                                 "/js/**",
                                 "/empleados/**",
-                                "/empleados/Empleados.html"
+                                "/empleados/nuevo"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
@@ -33,13 +32,7 @@ public class SecurityConfig {
                         .loginPage("/login")
                         .defaultSuccessUrl("/home", true)
                 )
-                .logout(logout -> logout
-                        .permitAll()
-                )
-                .formLogin(form -> form
-                        .loginPage("/login")
-                        .permitAll()
-                );
+                .csrf(csrf -> csrf.disable());
 
         return http.build();
     }
