@@ -1,3 +1,4 @@
+
 package edu.sena.dohutalent.controller;
 
 import edu.sena.dohutalent.model.Empleado;
@@ -26,7 +27,7 @@ public class EmpleadoController {
 
     // Muestra formulario para nuevo empleado
     @GetMapping("/nuevo")
-    public String mostrarFormulario(Model model) {
+    public String mostrarFormularioRegistro(Model model) {
         model.addAttribute("empleado", new Empleado());
         return "empleados/formulario";
     }
