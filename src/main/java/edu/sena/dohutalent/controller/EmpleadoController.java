@@ -27,7 +27,7 @@ public class EmpleadoController {
 
     // Muestra formulario para nuevo empleado
     @GetMapping("/nuevo")
-    public String mostrarFormularioRegistro(Model model) {
+    public String mostrarFormulario(Model model) {
         model.addAttribute("empleado", new Empleado());
         return "empleados/formulario";
     }
@@ -36,6 +36,12 @@ public class EmpleadoController {
     @PostMapping("/guardar")
     public String guardarEmpleado(@ModelAttribute Empleado empleado) {
         return "redirect:/empleados";
+    }
+
+    // Procesa el formulario
+    @PostMapping("/login")
+    public String atrasEmpleado(@ModelAttribute Empleado empleado) {
+        return "redirect:/login";
     }
 
     // Muestra detalles de un empleado

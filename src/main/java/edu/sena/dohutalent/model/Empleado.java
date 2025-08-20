@@ -1,3 +1,4 @@
+
 package edu.sena.dohutalent.model;
 
 import jakarta.persistence.Entity;

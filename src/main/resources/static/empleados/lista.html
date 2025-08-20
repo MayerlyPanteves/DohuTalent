@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="es">
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DOHUTALENT - Gestión de Empleados</title>
+    <title>DOHUTALENT - Lista de Empleados</title>
     <style>
         * {
             margin: 0;
@@ -53,6 +53,9 @@
             cursor: pointer;
             font-size: 14px;
             transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .logout-btn:hover {
@@ -80,12 +83,21 @@
             display: flex;
             align-items: center;
             padding: 0 15px;
+            cursor: pointer;
             transition: all 0.2s;
             border-bottom: 3px solid transparent;
             font-size: 14px;
             color: white;
-            opacity: 0.6;
-            pointer-events: none;
+        }
+
+        .nav-item:hover {
+            background-color: rgba(255,255,255,0.2);
+            border-bottom-color: #bbdefb;
+        }
+
+        .nav-item i {
+            margin-right: 8px;
+            font-size: 16px;
         }
 
         /* Contenido principal */
@@ -94,95 +106,73 @@
             flex: 1;
         }
 
+        .employee-list {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .employee-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .employee-table th,
+        .employee-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .employee-table th {
+            background-color: #f7fafc;
+            font-weight: 600;
+            color: #4a5568;
+        }
+
+        .employee-table tr:hover {
+            background-color: #f8fafc;
+        }
+
         .action-buttons {
-            margin-bottom: 25px;
             display: flex;
             gap: 10px;
         }
 
         .action-btn {
-            padding: 10px 20px;
+            padding: 6px 12px;
             border: none;
-            border-radius: 6px;
+            border-radius: 4px;
             cursor: pointer;
             font-size: 14px;
-            font-weight: 500;
             transition: all 0.2s;
             display: flex;
             align-items: center;
-            gap: 8px;
-        }
-
-        .new-btn {
-            background-color: #38a169;
-            color: white;
+            gap: 5px;
         }
 
         .edit-btn {
-            background-color: #3182ce;
+            background-color: #d69e2e;
             color: white;
         }
 
-        .search-btn {
-            background-color: #dd6b20;
+        .delete-btn {
+            background-color: #e53e3e;
             color: white;
         }
 
-        .back-btn {
-            background-color: #718096;
+        .add-btn {
+            background-color: #38a169;
             color: white;
+            padding: 10px 15px;
+            margin-bottom: 20px;
         }
 
         .action-btn:hover {
+            opacity: 0.9;
             transform: translateY(-2px);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background-color: white;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            border-radius: 8px;
-            overflow: hidden;
-        }
-
-        th, td {
-            padding: 15px;
-            text-align: left;
-            border-bottom: 1px solid #e2e8f0;
-        }
-
-        th {
-            background-color: #0d47a1;
-            color: white;
-            font-weight: 500;
-            position: sticky;
-            top: 0;
-        }
-
-        tr:hover {
-            background-color: #ebf8ff;
-        }
-
-        .checkbox-cell {
-            width: 20px;
-            text-align: center;
-        }
-
-        .view-btn {
-            background-color: #4a5568;
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 13px;
-            transition: all 0.2s;
-        }
-
-        .view-btn:hover {
-            background-color: #2d3748;
         }
 
         /* Pie de página */
@@ -200,6 +190,7 @@
             font-family: 'Courier New', monospace;
         }
     </style>
+    <!-- Iconos de Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
@@ -209,7 +200,7 @@
 
     <div class="user-info">
         <span>Mayerly Panteves Duran (ADMON)</span>
-        <button class="logout-btn" id="logoutBtn">
+        <button class="logout-btn" onclick="window.location.href='/login'">
             <i class="fas fa-sign-out-alt"></i> Salir
         </button>
     </div>
@@ -218,13 +209,13 @@
 <!-- Barra de navegación -->
 <div class="nav-bar">
     <ul class="nav-menu">
-        <li class="nav-item">
+        <li class="nav-item" onclick="window.location.href='/Cambiocontraseña'">
             <i class="fas fa-cog"></i> Sistema
         </li>
-        <li class="nav-item">
+        <li class="nav-item" onclick="window.location.href='/Reportes'">
             <i class="fas fa-chart-bar"></i> Reportes
         </li>
-        <li class="nav-item">
+        <li class="nav-item" onclick="window.location.href='/empleados'">
             <i class="fas fa-users"></i> Empleados
         </li>
     </ul>
@@ -232,152 +223,48 @@
 
 <!-- Contenido principal -->
 <div class="main-content">
-    <h2>Gestión de Empleados</h2>
+    <h2><i class="fas fa-users"></i> Lista de Empleados</h2>
 
-    <div class="action-buttons">
-        <button class="action-btn new-btn" onclick="window.location.href='/empleados/nuevo'">
-            <i class="fas fa-plus"></i> Nuevo
+    <div class="employee-list">
+        <button class="action-btn add-btn" onclick="window.location.href='nuevo'">
+            <i class="fas fa-user-plus"></i> Agregar Nuevo Empleado
         </button>
-        <button class="action-btn edit-btn">
-            <i class="fas fa-edit"></i> Modificar
-        </button>
-        <button class="action-btn search-btn">
-            <i class="fas fa-search"></i> Buscar
-        </button>
-        <button class="action-btn back-btn" onclick="window.location.href='/'">
-            <i class="fas fa-arrow-left"></i> Atrás
-        </button>
+
+        <table class="employee-table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Identificación</th>
+                <th>Primer Apellido</th>
+                <th>Segundo Apellido</th>
+                <th>Primer Nombre</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="empleado : ${empleados}">
+                <td th:text="${empleado.id}"></td>
+                <td th:text="${empleado.identificacion}"></td>
+                <td th:text="${empleado.primerApellido}"></td>
+                <td th:text="${empleado.segundoApellido}"></td>
+                <td th:text="${empleado.primerNombre}"></td>
+                <td>
+                    <div class="action-buttons">
+                        <button class="action-btn edit-btn" th:onclick="'window.location.href=\'/empleados/editar/' + ${empleado.id} + '\''">
+                            <i class="fas fa-edit"></i> Editar
+                        </button>
+                        <button class="action-btn delete-btn" th:onclick="'confirmarEliminacion(' + ${empleado.id} + ')'">
+                            <i class="fas fa-trash"></i> Eliminar
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            <tr th:if="${empleados.isEmpty()}">
+                <td colspan="6" style="text-align: center;">No se encontraron empleados registrados</td>
+            </tr>
+            </tbody>
+        </table>
     </div>
-
-    <table>
-        <thead>
-        <tr>
-            <th class="checkbox-cell"></th>
-            <th>Identificación</th>
-            <th>Primer apellido</th>
-            <th>Segundo apellido</th>
-            <th>Primer nombre</th>
-            <th>Cargo</th>
-            <th>Departamento</th>
-            <th>Estado</th>
-            <th>Acciones</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td class="checkbox-cell"><input type="checkbox"></td>
-            <td>1075305976</td>
-            <td>Panteves</td>
-            <td>Duran</td>
-            <td>Mayerly</td>
-            <td>Administrador</td>
-            <td>Dirección General</td>
-            <td>Activo</td>
-            <td>
-                <button class="view-btn" onclick="window.location.href='/empleados/ver/1075305976'">Ver</button>
-            </td>
-        </tr>
-        <tr>
-            <td class="checkbox-cell"><input type="checkbox"></td>
-            <td>1234567890</td>
-            <td>Gómez</td>
-            <td>Pérez</td>
-            <td>Carlos</td>
-            <td>Gerente</td>
-            <td>Administración</td>
-            <td>Activo</td>
-            <td><button class="view-btn">Ver</button></td>
-        </tr>
-        <tr>
-            <td class="checkbox-cell"><input type="checkbox"></td>
-            <td>2345678901</td>
-            <td>Rodríguez</td>
-            <td>Martínez</td>
-            <td>Ana</td>
-            <td>Contadora</td>
-            <td>Finanzas</td>
-            <td>Activo</td>
-            <td><button class="view-btn">Ver</button></td>
-        </tr>
-        <tr>
-            <td class="checkbox-cell"><input type="checkbox"></td>
-            <td>3456789012</td>
-            <td>López</td>
-            <td>García</td>
-            <td>Juan</td>
-            <td>Supervisor</td>
-            <td>Producción</td>
-            <td>Activo</td>
-            <td><button class="view-btn">Ver</button></td>
-        </tr>
-        <tr>
-            <td class="checkbox-cell"><input type="checkbox"></td>
-            <td>4567890123</td>
-            <td>Hernández</td>
-            <td>Sánchez</td>
-            <td>María</td>
-            <td>Analista</td>
-            <td>Recursos Humanos</td>
-            <td>Activo</td>
-            <td><button class="view-btn">Ver</button></td>
-        </tr>
-        <tr>
-            <td class="checkbox-cell"><input type="checkbox"></td>
-            <td>5678901234</td>
-            <td>Díaz</td>
-            <td>Ramírez</td>
-            <td>Pedro</td>
-            <td>Ingeniero</td>
-            <td>Tecnología</td>
-            <td>Activo</td>
-            <td><button class="view-btn">Ver</button></td>
-        </tr>
-        <tr>
-            <td class="checkbox-cell"><input type="checkbox"></td>
-            <td>6789012345</td>
-            <td>Torres</td>
-            <td>Flórez</td>
-            <td>Laura</td>
-            <td>Diseñadora</td>
-            <td>Marketing</td>
-            <td>Activo</td>
-            <td><button class="view-btn">Ver</button></td>
-        </tr>
-        <tr>
-            <td class="checkbox-cell"><input type="checkbox"></td>
-            <td>7890123456</td>
-            <td>Vargas</td>
-            <td>Mendoza</td>
-            <td>Andrés</td>
-            <td>Asistente</td>
-            <td>Logística</td>
-            <td>Inactivo</td>
-            <td><button class="view-btn">Ver</button></td>
-        </tr>
-        <tr>
-            <td class="checkbox-cell"><input type="checkbox"></td>
-            <td>8901234567</td>
-            <td>Castro</td>
-            <td>Rojas</td>
-            <td>Sofía</td>
-            <td>Secretaria</td>
-            <td>Dirección</td>
-            <td>Activo</td>
-            <td><button class="view-btn">Ver</button></td>
-        </tr>
-        <tr>
-            <td class="checkbox-cell"><input type="checkbox"></td>
-            <td>9012345678</td>
-            <td>Ortiz</td>
-            <td>Jiménez</td>
-            <td>David</td>
-            <td>Auditor</td>
-            <td>Calidad</td>
-            <td>Activo</td>
-            <td><button class="view-btn">Ver</button></td>
-        </tr>
-        </tbody>
-    </table>
 </div>
 
 <!-- Pie de página con fecha y hora -->
@@ -386,6 +273,7 @@
 </div>
 
 <script>
+    // Función para actualizar fecha y hora
     function updateDateTime() {
         const now = new Date();
         const options = {
@@ -400,12 +288,16 @@
         document.getElementById('datetime').textContent = now.toLocaleDateString('es-ES', options);
     }
 
+    // Actualizar inmediatamente y luego cada segundo
     updateDateTime();
     setInterval(updateDateTime, 1000);
 
-    document.getElementById('logoutBtn').addEventListener('click', function() {
-        window.location.href = '/login';
-    });
+    // Función para confirmar eliminación
+    function confirmarEliminacion(id) {
+        if (confirm('¿Está seguro que desea eliminar este empleado?')) {
+            window.location.href = '/empleados/eliminar/' + id;
+        }
+    }
 </script>
 </body>
 </html>
