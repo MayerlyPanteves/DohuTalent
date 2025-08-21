@@ -1,46 +1,45 @@
-
 package edu.sena.dohutalent.service;
 
 import edu.sena.dohutalent.model.Empleado;
 import edu.sena.dohutalent.repository.EmpleadoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
-@Service
+@Service // ✅ AÑADE ESTA ANOTACIÓN
+@Transactional // ✅ AÑADE ESTA ANOTACIÓN
 public class EmpleadoService {
 
     private final EmpleadoRepository empleadoRepository;
 
     @Autowired
-    public EmpleadoService(EmpleadoRepository empleadoRepository) {
+    public EmpleadoService (EmpleadoRepository empleadoRepository) {
         this.empleadoRepository = empleadoRepository;
     }
 
-    public List<Empleado> findAll() {
+    public Empleado guardarEmpleado(Empleado empleado) {
+        try {
+            System.out.println("✅ Guardando empleado: " + empleado.getPrimerNombre() + " " + empleado.getPrimerApellido());
+            System.out.println("✅ Identificación: " + empleado.getIdentificacion());
+            return empleadoRepository.save(empleado);
+        } catch (Exception e) {
+            System.out.println("❌ Error al guardar empleado: " + e.getMessage());
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    public List<Empleado> listarTodosEmpleados() {
         return empleadoRepository.findAll();
     }
 
-    public Empleado findById(String id) {
-        return empleadoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Empleado no encontrado con id: " + id));
+    public Empleado obtenerEmpleadoPorId(Long id) {
+        return empleadoRepository.findById(id).orElse(null);
     }
 
-    public Empleado save(Empleado empleado) {
-        return empleadoRepository.save(empleado);
-    }
-
-    public void deleteById(String id) {
+    public void eliminarEmpleado(Long id) {
         empleadoRepository.deleteById(id);
-    }
-
-    public List<Empleado> findBySegundoApellidoContaining(String segundoApellido) {
-        return empleadoRepository.findBySegundoApellidoContaining(segundoApellido);
-    }
-
-    public List<Empleado> findByPrimerApellidoContaining(String primerApellido) {
-        return empleadoRepository.findByPrimerApellidoContaining(primerApellido);
     }
 }

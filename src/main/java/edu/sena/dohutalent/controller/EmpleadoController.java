@@ -1,4 +1,3 @@
-
 package edu.sena.dohutalent.controller;
 
 import edu.sena.dohutalent.model.Empleado;
@@ -15,47 +14,41 @@ public class EmpleadoController {
     private final EmpleadoService empleadoService;
 
     @Autowired
-    public EmpleadoController(EmpleadoService empleadoService) {
-        this.empleadoService = empleadoService;
+    public EmpleadoController(EmpleadoService empleadoServicio) {
+        this.empleadoService = empleadoServicio;
     }
 
-    // Muestra la página estática
-    @GetMapping
-    public String mostrarListaEstatica() {
-        return "redirect:/empleados/lista.html";
-    }
-
-    // Muestra formulario para nuevo empleado
     @GetMapping("/nuevo")
-    public String mostrarFormulario(Model model) {
+    public String mostrarFormularioRegistro(Model model) {
         model.addAttribute("empleado", new Empleado());
         return "empleados/formulario";
     }
 
-    // Procesa el formulario
     @PostMapping("/guardar")
-    public String guardarEmpleado(@ModelAttribute Empleado empleado) {
-        return "redirect:/empleados";
+    public String guardarEmpleado(@ModelAttribute("empleado") Empleado empleado) {
+        try {
+            empleadoService.guardarEmpleado(empleado);
+            System.out.println("✅ Empleado guardado exitosamente!");
+            System.out.println("✅ ID: " + empleado.getId());
+            System.out.println("✅ Nombre: " + empleado.getPrimerNombre());
+            System.out.println("✅ Identificación: " + empleado.getIdentificacion());
+        } catch (Exception e) {
+            System.out.println("❌ Error al guardar empleado: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return "redirect:/empleados/lista";
     }
 
-    // Procesa el formulario
-    @PostMapping("/login")
-    public String atrasEmpleado(@ModelAttribute Empleado empleado) {
-        return "redirect:/login";
-    }
-
-    // Muestra detalles de un empleado
-    @GetMapping("/ver/{id}")
-    public String verDetalles(@PathVariable String id, Model model) {
-        Empleado empleado = empleadoService.findById(id);
-        model.addAttribute("empleado", empleado);
-        return "empleados/detalle";
-    }
-
-    // Elimina un empleado
-    @GetMapping("/eliminar/{id}")
-    public String eliminarEmpleado(@PathVariable String id) {
-        empleadoService.deleteById(id);
-        return "redirect:/empleados";
+    @GetMapping("/lista")
+    public String listarEmpleados(Model model) {
+        try {
+            var empleados = empleadoService.listarTodosEmpleados();
+            model.addAttribute("empleados", empleados);
+            System.out.println("✅ Empleados encontrados: " + empleados.size());
+        } catch (Exception e) {
+            System.out.println("❌ Error al listar empleados: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return "empleados/lista";
     }
 }
