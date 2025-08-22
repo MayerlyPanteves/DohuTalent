@@ -28,15 +28,15 @@ JWT para autenticación
 # Herramientas de desarrollo
 Git
 
-📦 Instalación
+#📦 Instalación
 Sigue estos pasos para instalar y configurar el proyecto localmente:
 
-# Clona el repositorio
+# 1. Clona el repositorio
 bash
 git clone https://github.com/MayerlyPanteves/DohuTalent.git
 cd DohuTalent
 
-# Instala las dependencias
+# 2. Instala las dependencias
 bash
 Instalar dependencias del backend
 cd backend
@@ -46,7 +46,7 @@ Instalar dependencias del frontend
 cd ../frontend
 npm install
 
-# Configuración de variables de entorno
+# 3. Configuración de variables de entorno
 bash
 Crear archivo .env en la carpeta backend
 DB_HOST=tu_host
@@ -56,10 +56,10 @@ DB_NAME=nombre_base_datos
 JWT_SECRET=tu_clave_secreta_jwt
 PORT=3001
 
-# Inicializa la base de datos
+# 4. Inicializa la base de datos
 Ejecuta el script SQL proporcionado en /database/schema.sql
 
-# Ejecuta la aplicación
+# 5. Ejecuta la aplicación
 bash
 Iniciar backend
 cd backend
