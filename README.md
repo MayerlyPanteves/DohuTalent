@@ -1,6 +1,6 @@
 # 📁 DohuTalent - Sistema de Gestión Documental
 
-Sistema de gestión documental diseñado para la Clínica DohuTalent, que permite administrar y almacenar de manera segura los documentos de empleados y contratistas.
+Sistema de gestión documental diseñado para la Clínica  ** ********* * ********* ****, que permite administrar los datos y almacenar de manera segura los documentos de empleados y contratistas.
 
 # ✨ Características Principales
 - Gestión centralizada de documentos de recursos humanos
