@@ -1,8 +1,8 @@
-# 📁 DohuTalent - Sistema de Gestión Documental
+# 📁 DohuTalent - Sistema de gestión documental
 
 Sistema de gestión documental diseñado para la Clínica  ** ********* * ********* ****, que permite administrar los datos y almacenar de manera segura los documentos de empleados y contratistas.
 
-# ✨ Características Principales
+# ✨ Características principales
 - Gestión centralizada de documentos de recursos humanos
 - Almacenamiento seguro de archivos con categorización
 - Control de acceso por roles de usuario
@@ -12,7 +12,7 @@ Sistema de gestión documental diseñado para la Clínica  ** ********* * ******
 
 Backups automáticos de información crítica
 
-# 🚀 Tecnologías Utilizadas
+# 🚀 Tecnologías utilizadas
 Frontend
 React.js
 Bootstrap
@@ -25,7 +25,7 @@ Express.js
 Base de datos (PostgreSQL)
 JWT para autenticación
 
-# Herramientas de Desarrollo
+# Herramientas de desarrollo
 Git
 
 📦 Instalación
@@ -67,18 +67,19 @@ En otra terminal, iniciar frontend
 cd frontend
 npm start
 
-# 🎯 Uso del Sistema
+# 🎯 Uso del sistema
 Acceso al sistema: Ingresa con tus credenciales asignadas
 Gestión de usuarios: Administra perfiles de empleados y contratistas
 Carga de documentos: Sube archivos organizados por categorías
 Búsqueda: Utiliza el sistema de filtros para encontrar documentos rápidamente
 Reportes: Genera informes sobre la documentación almacenada
 
-# 👥 Roles de Usuario
+# 👥 Roles de usuario
 Administrador: Acceso completo al sistema
 Gestor de RH: Puede gestionar documentos y usuarios
 
-# 📋 Estructura del Proyecto
+# 📋 Estructura del proyecto
+
 text
 DohuTalent/
 ├── backend/
@@ -117,6 +118,6 @@ Abre un Pull Request
 # 📞 Soporte
 Para soporte técnico o preguntas sobre el sistema, contactar al 3158394514.
 
-# Última actualización: Febrero 2024
-# Versión: 1.0.0
-# Desarrollado por: Mayerly Panteves Duran
+Última actualización: Junio 2025
+Versión: 1.0.0
+Desarrollado por: Mayerly Panteves Duran
