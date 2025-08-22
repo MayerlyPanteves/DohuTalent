@@ -64,6 +64,7 @@ bash
 Iniciar backend
 cd backend
 npm start
+
 En otra terminal, iniciar frontend
 cd frontend
 npm start
@@ -83,39 +84,22 @@ Gestor de RH: Puede gestionar documentos y usuarios
 
 text
 DohuTalent/
-
 ├── backend/
-
 │   ├── controllers/
-
 │   ├── models/
-
 │   ├── routes/
-
 │   ├── middleware/
-
 │   └── config/
-
 ├── frontend/
-
 │   ├── public/
-
 │   ├── src/
-
 │   │   ├── components/
-
 │   │   ├── pages/
-
 │   │   ├── services/
-
 │   │   └── utils/
-
 ├── database/
-
 │   ├── schema.sql
-
 │   └── seeds.sql
-
 └── documentation/
 
 # 🔒 Seguridad
