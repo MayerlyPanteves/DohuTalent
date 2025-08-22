@@ -38,10 +38,11 @@ cd DohuTalent
 
 # Instala las dependencias
 bash
-# Instalar dependencias del backend
+Instalar dependencias del backend
 cd backend
 npm install
-# Instalar dependencias del frontend
+
+Instalar dependencias del frontend
 cd ../frontend
 npm install
 
@@ -82,22 +83,39 @@ Gestor de RH: Puede gestionar documentos y usuarios
 
 text
 DohuTalent/
+
 ├── backend/
+
 │   ├── controllers/
+
 │   ├── models/
+
 │   ├── routes/
+
 │   ├── middleware/
+
 │   └── config/
+
 ├── frontend/
+
 │   ├── public/
+
 │   ├── src/
+
 │   │   ├── components/
+
 │   │   ├── pages/
+
 │   │   ├── services/
+
 │   │   └── utils/
+
 ├── database/
+
 │   ├── schema.sql
+
 │   └── seeds.sql
+
 └── documentation/
 
 # 🔒 Seguridad
